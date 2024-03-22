@@ -31,6 +31,7 @@ public abstract class Tamagochi extends Observable {
 
 				if (puntosVida == 0) {
 					notifyObservers(new String[] { "MUERTO" });
+					cancel();
 				} else if (puntosVida > 0) {
 					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion });
 				}
