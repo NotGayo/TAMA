@@ -9,6 +9,7 @@ public abstract class Tamagochi extends Observable {
 	protected int puntosComida;
 	private Timer timer = null;
 	private int puntuacion;
+	
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -29,11 +30,13 @@ public abstract class Tamagochi extends Observable {
 				// OBSERVER -- ESTE ES OBSERVABLE
 				setChanged();
 
-				if (puntosVida == 0) {
+				if (puntosVida == 0 || puntosComida == 0) {
 					notifyObservers(new String[] { "MUERTO" });
 					cancel();
-				} else if (puntosVida > 0) {
-					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion });
+				} 
+
+				else if (puntosVida > 0 && puntosComida > 0) {
+					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, puntosVida%10, puntosComida%10 });
 				}
 			}
 		};
@@ -55,9 +58,17 @@ public abstract class Tamagochi extends Observable {
 		this.puntosComida--;
 		System.out.printf("Comida " + puntosComida);
 	}
-
+	private void aumentarPuntuacionSobreElTiempo() {
+		
+	}
 	public static void main(String[] args) {
 		Tamagochi t = new Tamagochi() {
 		};
+	}
+	public void sumarVida() {
+		this.puntosVida += 10;
+	}
+	public void sumarComida() {
+		this.puntosComida += 10;
 	}
 }
