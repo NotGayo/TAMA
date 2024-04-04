@@ -30,6 +30,9 @@ public class Juego extends JFrame implements Observer {
 	JLabel vida = new JLabel("New label");
 	JLabel lblNewLabel_1 = new JLabel("New label");
 	JLabel puntuacion = new JLabel("");
+	JLabel corazon_4 = new JLabel("New label");
+	JButton cucharada = new JButton("");
+	JButton caramelo = new JButton("");
 
 	/**
 	 * Launch the application.
@@ -52,6 +55,7 @@ public class Juego extends JFrame implements Observer {
 				vida.setText(intArray[0] + "");
 				comida.setText(intArray[1] + "");
 				puntuacion.setText("Puntuacion: " + intArray[2] + "");
+				
 			}
 			// SI LA VIDA ES 0
 			else if (arg1 instanceof String[]) {
@@ -59,7 +63,6 @@ public class Juego extends JFrame implements Observer {
 				if (StringArray[0] == "MUERTO") {
 					deathScreen();
 				}
-
 			}
 		}
 
@@ -80,8 +83,11 @@ public class Juego extends JFrame implements Observer {
 		DEATH_GIF.setBounds(212, 142, 51, 123);
 		contentPane.add(DEATH_GIF);
 		DEATH_GIF
-				.setIcon(new ImageIcon("C:\\Users\\Usuario\\Desktop\\Tamagotchi\\Tamagotchi\\src\\sprites\\death.gif"));
+				.setIcon(new ImageIcon(Juego.class.getResource("/sprites/death.gif")));
 		contentPane.add(getBtnRet());
+	}
+	private void tresdecuatrocorazones() {
+		corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
 	}
 
 	/**
@@ -106,41 +112,15 @@ public class Juego extends JFrame implements Observer {
 		lblNewLabel.setForeground(Color.WHITE);
 		contentPane.add(lblNewLabel);
 
-		Panel panel = new Panel();
-		panel.setBounds(32, 147, 28, 25);
-		contentPane.add(panel);
-		panel.setLayout(null);
-
-		Panel panel_1 = new Panel();
-		panel_1.setBounds(32, 178, 28, 25);
-		contentPane.add(panel_1);
-		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
-
-		Panel panel_2 = new Panel();
-		panel_2.setBounds(32, 209, 28, 25);
-		contentPane.add(panel_2);
-		panel_2.setLayout(new GridLayout(1, 0, 0, 0));
-
-		Panel panel_3 = new Panel();
-		panel_3.setBounds(32, 240, 28, 25);
-		contentPane.add(panel_3);
-		panel_3.setLayout(new GridLayout(1, 0, 0, 0));
-
-		Panel panel_4 = new Panel();
-		panel_4.setBounds(417, 147, 28, 25);
-		contentPane.add(panel_4);
-
-		Panel panel_1_1 = new Panel();
-		panel_1_1.setBounds(417, 178, 28, 25);
-		contentPane.add(panel_1_1);
-
-		Panel panel_2_1 = new Panel();
-		panel_2_1.setBounds(417, 209, 28, 25);
-		contentPane.add(panel_2_1);
-
-		Panel panel_3_1 = new Panel();
-		panel_3_1.setBounds(417, 240, 28, 25);
-		contentPane.add(panel_3_1);
+		Panel panel1_1_0 = new Panel();
+		panel1_1_0.setBounds(32, 147, 28, 25);
+		contentPane.add(panel1_1_0);
+		panel1_1_0.setLayout(null);
+		
+		
+		corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+		corazon_4.setBounds(0, 0, 28, 25);
+		panel1_1_0.add(corazon_4);
 
 		Panel panel_5 = new Panel();
 		panel_5.setBounds(72, 289, 28, 25);
@@ -177,7 +157,7 @@ public class Juego extends JFrame implements Observer {
 		lblNewLabel_1.setBounds(212, 142, 51, 123);
 		contentPane.add(lblNewLabel_1);
 		lblNewLabel_1.setIcon(
-				new ImageIcon("C:\\Users\\Usuario\\Desktop\\Tamagotchi\\Tamagotchi\\src\\sprites\\gudetama1.gif"));
+				new ImageIcon(Juego.class.getResource("/sprites/gudetama1.gif")));
 
 		vida.setForeground(Color.WHITE);
 		vida.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -203,6 +183,73 @@ public class Juego extends JFrame implements Observer {
 		puntuacion.setForeground(Color.YELLOW);
 		puntuacion.setBounds(361, 23, 115, 31);
 		contentPane.add(puntuacion);
+		
+		Panel panel1_1_1 = new Panel();
+		panel1_1_1.setLayout(null);
+		panel1_1_1.setBounds(32, 178, 28, 25);
+		contentPane.add(panel1_1_1);
+		
+		JLabel corazon_3 = new JLabel("New label");
+		corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+		corazon_3.setBounds(0, 0, 28, 25);
+		panel1_1_1.add(corazon_3);
+		
+		Panel panel1_1_2 = new Panel();
+		panel1_1_2.setLayout(null);
+		panel1_1_2.setBounds(32, 209, 28, 25);
+		contentPane.add(panel1_1_2);
+		
+		JLabel corazon_2 = new JLabel("New label");
+		corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+		corazon_2.setBounds(0, 0, 28, 25);
+		panel1_1_2.add(corazon_2);
+		
+		Panel panel1_1_3 = new Panel();
+		panel1_1_3.setLayout(null);
+		panel1_1_3.setBounds(32, 240, 28, 25);
+		contentPane.add(panel1_1_3);
+		
+		JLabel corazon_1 = new JLabel("New label");
+		corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+		corazon_1.setBounds(0, 0, 28, 25);
+		
+		panel1_1_3.add(corazon_1);
+		
+		
+		caramelo.setForeground(Color.BLACK);
+		caramelo.setBackground(Color.BLACK);
+		caramelo.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
+		caramelo.setBounds(117, 110, 35, 31);
+		caramelo.addActionListener(getControler());
+		contentPane.add(caramelo);
+		
+		JLabel lblNewLabel_4 = new JLabel("New label");
+		lblNewLabel_4.setBounds(417, 147, 80, 31);
+		contentPane.add(lblNewLabel_4);
+		lblNewLabel_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		
+		JLabel lblNewLabel_4_1 = new JLabel("New label");
+		lblNewLabel_4_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		lblNewLabel_4_1.setBounds(417, 178, 80, 31);
+		contentPane.add(lblNewLabel_4_1);
+		
+		JLabel lblNewLabel_4_2 = new JLabel("New label");
+		lblNewLabel_4_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		lblNewLabel_4_2.setBounds(417, 209, 80, 31);
+		contentPane.add(lblNewLabel_4_2);
+		
+		JLabel lblNewLabel_4_3 = new JLabel("New label");
+		lblNewLabel_4_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		lblNewLabel_4_3.setBounds(417, 240, 80, 31);
+		contentPane.add(lblNewLabel_4_3);
+		
+		
+		cucharada.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
+		cucharada.setForeground(Color.BLACK);
+		cucharada.setBackground(Color.BLACK);
+		cucharada.setBounds(310, 110, 35, 31);
+		cucharada.addActionListener(getControler());
+		contentPane.add(cucharada);
 	}
 
 	private JButton getBtnRet() {
@@ -237,7 +284,12 @@ public class Juego extends JFrame implements Observer {
 				closeWindow();
 
 			}
-
+			else if (e.getSource().equals(cucharada)) {
+				Tamagochi.getTamagochi().sumarComida();
 		}
+			else if(e.getSource().equals(caramelo)) {
+				Tamagochi.getTamagochi().sumarVida();
+			}
 	}
-}
+	}
+	}
