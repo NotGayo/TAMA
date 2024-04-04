@@ -31,8 +31,15 @@ public class Juego extends JFrame implements Observer {
 	JLabel lblNewLabel_1 = new JLabel("New label");
 	JLabel puntuacion = new JLabel("");
 	JLabel corazon_4 = new JLabel("New label");
+	JLabel corazon_3 = new JLabel("New label");
+	JLabel corazon_2 = new JLabel("New label");
+	JLabel corazon_1 = new JLabel("New label");
 	JButton cucharada = new JButton("");
 	JButton caramelo = new JButton("");
+	JLabel comida_4 = new JLabel("New label");
+	JLabel comida_3 = new JLabel("New label");
+	JLabel comida_2 = new JLabel("New label");
+	JLabel comida_1 = new JLabel("New label");
 
 	/**
 	 * Launch the application.
@@ -55,6 +62,8 @@ public class Juego extends JFrame implements Observer {
 				vida.setText(intArray[0] + "");
 				comida.setText(intArray[1] + "");
 				puntuacion.setText("Puntuacion: " + intArray[2] + "");
+				representarCorazones(intArray[0]/10);
+				representarComida(intArray[1]/10);
 				
 			}
 			// SI LA VIDA ES 0
@@ -62,6 +71,13 @@ public class Juego extends JFrame implements Observer {
 				String[] StringArray = (String[]) arg1;
 				if (StringArray[0] == "MUERTO") {
 					deathScreen();
+				}
+			}
+			else if (arg1 instanceof String[]) {
+				String[] StringArray = (String[]) arg1;
+				if (StringArray[0] == "TamaDigOut") {
+					//SALTAR A TAMA DIG OUT
+					
 				}
 			}
 		}
@@ -86,8 +102,57 @@ public class Juego extends JFrame implements Observer {
 				.setIcon(new ImageIcon(Juego.class.getResource("/sprites/death.gif")));
 		contentPane.add(getBtnRet());
 	}
-	private void tresdecuatrocorazones() {
-		corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+	private void representarCorazones(int nCorazones) {
+		if(nCorazones == 1) {
+			corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+			corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+			corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+		}
+		else if(nCorazones == 2) {
+			corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+			corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+		}
+		else if(nCorazones == 3) {
+			corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHeart.png")));
+		}
+		else if(nCorazones == 4) {
+			corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+			corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
+		}
+	}
+	private void representarComida(int nComida) {
+		if(nComida == 1) {
+			comida_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+			comida_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+			comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+		}
+		else if(nComida == 2) {
+			comida_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+			comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+		}
+		else if(nComida == 3) {
+			comida_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/emptyHungry.png")));
+		}
+		else if(nComida == 4) {
+			comida_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+			comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		}
 	}
 
 	/**
@@ -171,12 +236,12 @@ public class Juego extends JFrame implements Observer {
 
 		JLabel lblNewLabel_2 = new JLabel("VIDA");
 		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setBounds(32, 94, 45, 13);
+		lblNewLabel_2.setBounds(32, 94, 68, 19);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("COMIDA");
 		lblNewLabel_3.setForeground(Color.WHITE);
-		lblNewLabel_3.setBounds(400, 94, 45, 13);
+		lblNewLabel_3.setBounds(385, 85, 74, 25);
 		contentPane.add(lblNewLabel_3);
 		
 		puntuacion.setFont(new Font("Consolas", Font.BOLD, 16));
@@ -189,7 +254,7 @@ public class Juego extends JFrame implements Observer {
 		panel1_1_1.setBounds(32, 178, 28, 25);
 		contentPane.add(panel1_1_1);
 		
-		JLabel corazon_3 = new JLabel("New label");
+		
 		corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
 		corazon_3.setBounds(0, 0, 28, 25);
 		panel1_1_1.add(corazon_3);
@@ -199,7 +264,7 @@ public class Juego extends JFrame implements Observer {
 		panel1_1_2.setBounds(32, 209, 28, 25);
 		contentPane.add(panel1_1_2);
 		
-		JLabel corazon_2 = new JLabel("New label");
+		
 		corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
 		corazon_2.setBounds(0, 0, 28, 25);
 		panel1_1_2.add(corazon_2);
@@ -209,7 +274,7 @@ public class Juego extends JFrame implements Observer {
 		panel1_1_3.setBounds(32, 240, 28, 25);
 		contentPane.add(panel1_1_3);
 		
-		JLabel corazon_1 = new JLabel("New label");
+		
 		corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
 		corazon_1.setBounds(0, 0, 28, 25);
 		
@@ -219,29 +284,29 @@ public class Juego extends JFrame implements Observer {
 		caramelo.setForeground(Color.BLACK);
 		caramelo.setBackground(Color.BLACK);
 		caramelo.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
-		caramelo.setBounds(117, 110, 35, 31);
+		caramelo.setBounds(117, 131, 35, 31);
 		caramelo.addActionListener(getControler());
 		contentPane.add(caramelo);
 		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		lblNewLabel_4.setBounds(417, 147, 80, 31);
-		contentPane.add(lblNewLabel_4);
-		lblNewLabel_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
 		
-		JLabel lblNewLabel_4_1 = new JLabel("New label");
-		lblNewLabel_4_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
-		lblNewLabel_4_1.setBounds(417, 178, 80, 31);
-		contentPane.add(lblNewLabel_4_1);
+		comida_4.setBounds(417, 147, 80, 31);
+		contentPane.add(comida_4);
+		comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
 		
-		JLabel lblNewLabel_4_2 = new JLabel("New label");
-		lblNewLabel_4_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
-		lblNewLabel_4_2.setBounds(417, 209, 80, 31);
-		contentPane.add(lblNewLabel_4_2);
 		
-		JLabel lblNewLabel_4_3 = new JLabel("New label");
-		lblNewLabel_4_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
-		lblNewLabel_4_3.setBounds(417, 240, 80, 31);
-		contentPane.add(lblNewLabel_4_3);
+		comida_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		comida_3.setBounds(417, 178, 80, 31);
+		contentPane.add(comida_3);
+		
+		
+		comida_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		comida_2.setBounds(417, 209, 80, 31);
+		contentPane.add(comida_2);
+		
+		
+		comida_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
+		comida_1.setBounds(417, 240, 80, 31);
+		contentPane.add(comida_1);
 		
 		
 		cucharada.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
