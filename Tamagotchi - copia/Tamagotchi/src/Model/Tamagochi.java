@@ -10,6 +10,9 @@ public abstract class Tamagochi extends Observable {
 	protected int puntosComida;
 	private Timer timer = null;
 	private int puntuacion;
+	protected int seconds = 0;
+	protected final String[] evolutions = {"egg","kuchipatchi","mimitchi","maskutchi","mametchi"};
+	protected int currentPhase = 0;
 	//private Random rand;
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
@@ -26,31 +29,40 @@ public abstract class Tamagochi extends Observable {
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				decrementarContadorVida();
-				decrementarContadorComida();
+				
 				// OBSERVER -- ESTE ES OBSERVABLE
 				setChanged();
 				//GENERA UN NUMERO RANDOM DE 0-39
 				//int chall = rand.nextInt(40);
-				int answer = 33;
+				//int answer = 33;
 				//SI SON IGUALES ENTONCES MANDA LA SEÑAL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
 				//if (chall == answer) {
 					//notifyObservers(new String[] {"TamaDigOut"});
 				//}
-
-				if (puntosVida == 0 || puntosComida == 0) {
+				seconds++;
+				if(seconds%2 == 0) {
+				decrementarContadorVida();
+				decrementarContadorComida();
+				}
+				if(seconds % 5 == 0) {
+					puntuacion++;
+				}
+				if(seconds % 15 == 0 && puntosVida >0 && puntosComida > 0) {
+					currentPhase++;
+					notifyObservers(new String[] { evolutions[currentPhase] });
+				}
+				else if (puntosVida == 0 || puntosComida == 0) {
 					notifyObservers(new String[] { "MUERTO" });
 					cancel();
 				} 
 
 				else if (puntosVida > 0 && puntosComida > 0) {
-					System.out.println(puntosComida%10 + " ññññ "+ puntosVida%10);
 					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion });
 				}
 			}
 		};
 		timer = new Timer();
-		timer.scheduleAtFixedRate(timerTask, 0, 400);
+		timer.scheduleAtFixedRate(timerTask, 0, 1000);
 		
 	}
 
