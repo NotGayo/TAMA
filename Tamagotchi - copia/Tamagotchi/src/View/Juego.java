@@ -20,26 +20,35 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Panel;
 import java.awt.GridLayout;
+import javax.swing.Box;
 
 public class Juego extends JFrame implements Observer {
 
 	private JPanel contentPane;
 	private JButton BtnRet;
 	private Controler controler = null;
-	JLabel comida = new JLabel("New label");
-	JLabel vida = new JLabel("New label");
-	JLabel personaje = new JLabel("New label");
+	JLabel comida = new JLabel("");
+	JLabel vida = new JLabel("");
+	JLabel personaje = new JLabel("");
 	JLabel puntuacion = new JLabel("");
 	JButton cucharada = new JButton("");
 	JButton caramelo = new JButton("");
-	JLabel comida_4 = new JLabel("New label");
-	JLabel comida_3 = new JLabel("New label");
-	JLabel comida_2 = new JLabel("New label");
-	JLabel comida_1 = new JLabel("New label");
-	JLabel corazon_4 = new JLabel("New label");
-	JLabel corazon_3 = new JLabel("New label");
-	JLabel corazon_2 = new JLabel("New label");
-	JLabel corazon_1 = new JLabel("New label");
+	JLabel comida_4 = new JLabel("");
+	JLabel comida_3 = new JLabel("");
+	JLabel comida_2 = new JLabel("");
+	JLabel comida_1 = new JLabel("");
+	JLabel corazon_4 = new JLabel("");
+	JLabel corazon_3 = new JLabel("");
+	JLabel corazon_2 = new JLabel("");
+	JLabel corazon_1 = new JLabel("");
+	JLabel p3 = new JLabel("");
+	JLabel p2 = new JLabel("");
+	JLabel p1 = new JLabel("");
+	JLabel c3 = new JLabel("");
+	JLabel c2 = new JLabel("");
+	JLabel c1 = new JLabel("");
+	JButton enfermedad = new JButton("");
+	JButton suciedad = new JButton("");
 
 	/**
 	 * Launch the application.
@@ -59,12 +68,16 @@ public class Juego extends JFrame implements Observer {
 		if (arg0 instanceof Tamagochi) { // MIENTRAS QUE LA VIDA ES MAYOR QUE 0
 			if (arg1 instanceof int[]) {
 				int[] intArray = (int[]) arg1;
-				vida.setText(intArray[0] + "");
-				comida.setText(intArray[1] + "");
+				representarPiruletas(intArray[3]);
+				representarCucharadas(intArray[4]);
+				//vida.setText(intArray[0] + "");
+				//comida.setText(intArray[1] + "");
 				puntuacion.setText("Puntuacion: " + intArray[2] + "");
 				representarCorazones(intArray[0]/10);
 				representarComida(intArray[1]/10);
-				System.out.println("ok");
+				interpretarEnfermedad(intArray[5]);
+				interpretarSuciedad(intArray[6]);
+				
 				
 			}
 		
@@ -76,6 +89,7 @@ public class Juego extends JFrame implements Observer {
 				}
 				else if (StringArray[0] == "TamaDigOut") {
 					//SALTAR A TAMA DIG OUT
+					//contentPane.setVisible(false);
 					
 				}
 				else if (StringArray[0] == "kuchipatchi") {
@@ -170,7 +184,81 @@ public class Juego extends JFrame implements Observer {
 			comida_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/hungry.png")));
 		}
 	}
-
+	private void representarPiruletas(int nPiruletas) {
+		
+		if(nPiruletas == 1) {
+			p1.setVisible(true);
+			p2.setVisible(false);
+			p3.setVisible(false);
+			
+			
+		}
+		else if(nPiruletas == 2) {
+			p1.setVisible(true);
+			p2.setVisible(true);
+			p3.setVisible(false);
+		}
+		else if(nPiruletas == 3) {
+			p1.setVisible(true);
+			p2.setVisible(true);
+			p3.setVisible(true);
+		}
+		else if(nPiruletas == 4) {
+			p1.setVisible(true);
+			p2.setVisible(true);
+			p3.setVisible(true);
+		}
+		else if(nPiruletas == 0) {
+			p1.setVisible(false);
+			p2.setVisible(false);
+			p3.setVisible(false);
+		}
+	}
+	private void representarCucharadas(int nCucharadas) {
+		if(nCucharadas == 1) {
+			c1.setVisible(true);
+			c2.setVisible(false);
+			c3.setVisible(false);
+			
+		}
+		else if(nCucharadas == 2) {
+			c1.setVisible(true);
+			c2.setVisible(true);
+			c3.setVisible(false);
+		}
+		else if(nCucharadas == 3) {
+			c1.setVisible(true);
+			c2.setVisible(true);
+			c3.setVisible(true);
+		}
+		else if(nCucharadas == 4) {
+			c1.setVisible(true);
+			c2.setVisible(true);
+			c3.setVisible(true);
+		}
+		else if(nCucharadas == 0) {
+			c1.setVisible(false);
+			c2.setVisible(false);
+			c3.setVisible(false);
+		}
+	}
+	
+	private void interpretarEnfermedad(int enf) {
+		if(enf == 0) {
+			enfermedad.setVisible(false);
+		}
+		else if(enf == 1) {
+			enfermedad.setVisible(true);
+		}
+	}
+	private void interpretarSuciedad(int suc) {
+		if(suc == 0) {
+			suciedad.setVisible(false);
+		}
+		else if(suc == 1) {
+			suciedad.setVisible(true);
+		}
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -193,42 +281,10 @@ public class Juego extends JFrame implements Observer {
 		lblNewLabel.setForeground(Color.WHITE);
 		contentPane.add(lblNewLabel);
 
-		Panel panel_5 = new Panel();
-		panel_5.setBounds(72, 289, 28, 25);
-		contentPane.add(panel_5);
-
-		Panel panel_5_1 = new Panel();
-		panel_5_1.setBounds(106, 289, 28, 25);
-		contentPane.add(panel_5_1);
-
-		Panel panel_5_2 = new Panel();
-		panel_5_2.setBounds(140, 289, 28, 25);
-		contentPane.add(panel_5_2);
-
-		Panel panel_5_3 = new Panel();
-		panel_5_3.setBounds(174, 289, 28, 25);
-		contentPane.add(panel_5_3);
-
-		Panel panel_5_4 = new Panel();
-		panel_5_4.setBounds(385, 289, 28, 25);
-		contentPane.add(panel_5_4);
-
-		Panel panel_5_5 = new Panel();
-		panel_5_5.setBounds(351, 289, 28, 25);
-		contentPane.add(panel_5_5);
-
-		Panel panel_5_6 = new Panel();
-		panel_5_6.setBounds(317, 289, 28, 25);
-		contentPane.add(panel_5_6);
-
-		Panel panel_5_7 = new Panel();
-		panel_5_7.setBounds(283, 289, 28, 25);
-		contentPane.add(panel_5_7);
-
-		personaje.setBounds(189, 142, 109, 123);
+		personaje.setBounds(171, 147, 125, 124);
 		contentPane.add(personaje);
 		personaje.setIcon(
-				new ImageIcon(Juego.class.getResource("/sprites/gudetama1.gif")));
+				new ImageIcon(Juego.class.getResource("/sprites/Egg1.png")));
 
 		vida.setForeground(Color.WHITE);
 		vida.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -254,13 +310,12 @@ public class Juego extends JFrame implements Observer {
 		puntuacion.setForeground(Color.YELLOW);
 		puntuacion.setBounds(339, 29, 137, 31);
 		contentPane.add(puntuacion);
-		caramelo.addActionListener(getControler());
 		
 		
 		caramelo.setForeground(Color.BLACK);
 		caramelo.setBackground(Color.BLACK);
 		caramelo.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
-		caramelo.setBounds(133, 110, 35, 31);
+		caramelo.setBounds(110, 109, 35, 31);
 		caramelo.addActionListener(getControler());
 		contentPane.add(caramelo);
 		
@@ -285,32 +340,93 @@ public class Juego extends JFrame implements Observer {
 		contentPane.add(comida_1);
 		
 		
-		cucharada.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
+		
 		cucharada.setForeground(Color.BLACK);
 		cucharada.setBackground(Color.BLACK);
+		cucharada.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
 		cucharada.setBounds(317, 110, 35, 31);
 		cucharada.addActionListener(getControler());
 		contentPane.add(cucharada);
 		
 		
 		corazon_4.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
-		corazon_4.setBounds(25, 147, 80, 31);
+		corazon_4.setBounds(25, 147, 43, 31);
 		contentPane.add(corazon_4);
 		
 		
 		corazon_3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
-		corazon_3.setBounds(25, 178, 80, 31);
+		corazon_3.setBounds(25, 178, 43, 31);
 		contentPane.add(corazon_3);
 		
 		
 		corazon_2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
-		corazon_2.setBounds(25, 209, 80, 31);
+		corazon_2.setBounds(25, 209, 43, 31);
 		contentPane.add(corazon_2);
 		
 		
 		corazon_1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/heart.png")));
-		corazon_1.setBounds(25, 240, 80, 31);
+		corazon_1.setBounds(25, 240, 45, 31);
 		contentPane.add(corazon_1);
+		
+		
+		p3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
+		p3.setBounds(102, 289, 35, 38);
+		contentPane.add(p3);
+		
+		
+		p2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
+		p2.setBounds(147, 289, 35, 38);
+		contentPane.add(p2);
+		
+		
+		p1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
+		p1.setBounds(189, 289, 35, 38);
+		contentPane.add(p1);
+		
+		
+		c3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
+		c3.setBounds(339, 289, 35, 38);
+		contentPane.add(c3);
+		
+		
+		c2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
+		c2.setBounds(295, 289, 35, 38);
+		contentPane.add(c2);
+		
+		c1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
+		c1.setBounds(249, 289, 35, 38);
+		contentPane.add(c1);
+		
+		Box horizontalBox = Box.createHorizontalBox();
+		horizontalBox.setBounds(99, 289, 125, 44);
+		contentPane.add(horizontalBox);
+		
+		Box horizontalBox_1 = Box.createHorizontalBox();
+		horizontalBox_1.setBounds(234, 289, 130, 44);
+		contentPane.add(horizontalBox_1);
+		enfermedad.setBackground(Color.BLACK);
+		
+		
+		enfermedad.setIcon(new ImageIcon(Juego.class.getResource("/sprites/Virus.png")));
+		enfermedad.setBounds(77, 178, 86, 62);
+		contentPane.add(enfermedad);
+		enfermedad.addActionListener(getControler());
+		enfermedad.setVisible(false);
+		suciedad.setBackground(Color.BLACK);
+		
+		
+		suciedad.setIcon(new ImageIcon(Juego.class.getResource("/sprites/kk.png")));
+		suciedad.setBounds(295, 178, 86, 62);
+		contentPane.add(suciedad);
+		suciedad.addActionListener(getControler());
+		suciedad.setVisible(false);
+		
+		p1.setVisible(false);
+		p2.setVisible(false);
+		p3.setVisible(false);
+		c1.setVisible(false);
+		c2.setVisible(false);
+		c3.setVisible(false);
 	}
 
 	private JButton getBtnRet() {
@@ -347,9 +463,15 @@ public class Juego extends JFrame implements Observer {
 			}
 			else if (e.getSource().equals(cucharada)) {
 				Tamagochi.getTamagochi().sumarComida();
-		}
+			}
 			else if(e.getSource().equals(caramelo)) {
 				Tamagochi.getTamagochi().sumarVida();
+			}
+			else if(e.getSource().equals(enfermedad)) {
+				Tamagochi.getTamagochi().quitarEnf();
+			}
+			else if(e.getSource().equals(suciedad)) {
+				Tamagochi.getTamagochi().quitarSuc();
 			}
 	}
 	}
