@@ -13,7 +13,11 @@ public abstract class Tamagochi extends Observable {
 	protected int seconds = 0;
 	protected final String[] evolutions = {"egg","kuchipatchi","mimitchi","maskutchi","mametchi"};
 	protected int currentPhase = 0;
-	//private Random rand;
+	private Random rand = new Random();
+	private int nPiruletas = 0;
+	private int nCucharadas = 0;
+	private boolean enfermedad = false;
+	private boolean suciedad = false;
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -33,31 +37,70 @@ public abstract class Tamagochi extends Observable {
 				// OBSERVER -- ESTE ES OBSERVABLE
 				setChanged();
 				//GENERA UN NUMERO RANDOM DE 0-39
-				//int chall = rand.nextInt(40);
-				//int answer = 33;
+				int TMD = rand.nextInt(40);
+				int goTMD = 33;
 				//SI SON IGUALES ENTONCES MANDA LA SEÑAL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
-				//if (chall == answer) {
+				if (TMD == goTMD) {
 					//notifyObservers(new String[] {"TamaDigOut"});
-				//}
+				}
+				//SI SON IGUALES ENTONCES SE PONE sucio (20%)
+				int SUC = rand.nextInt(5);
+				int goSUC = 3;
+				if(SUC == goSUC) {
+					suciedad = true;
+				}
+				
+				
+				//SI SON IGUALES ENTONCES SE PONE enfermo (30%)
+				int ENF1 = rand.nextInt(10);
+				int ENF2 = rand.nextInt(10);
+				int ENF3 = rand.nextInt(10);
+				int goENF = 5;
+				if(ENF1 == goENF || ENF2== goENF || ENF3 == goENF){
+					enfermedad = true;
+				}
+				
+				//CALCULAMOS LA PUNTUACION
+				puntuacion += calcularPuntuacion(seconds, enfermedad, suciedad, evolutions[currentPhase]);
+				
+				if(puntosVida > 40) {
+					puntosVida = 40;
+				}
+				if(puntosComida > 40) {
+					puntosComida = 40;
+				}
 				seconds++;
 				if(seconds%2 == 0) {
 				decrementarContadorVida();
 				decrementarContadorComida();
+				
 				}
+				
 				if(seconds % 5 == 0) {
-					puntuacion++;
+					if(nCucharadas > 0) {
+						nCucharadas--;
+						puntosComida += 10;
+					}
+					if(nPiruletas > 0) {
+						nPiruletas--;
+						puntosVida += 10;
+					}
 				}
-				if(seconds % 15 == 0 && puntosVida >0 && puntosComida > 0) {
-					currentPhase++;
-					notifyObservers(new String[] { evolutions[currentPhase] });
-				}
-				else if (puntosVida == 0 || puntosComida == 0) {
+				
+				else if (puntosVida <= 0 || puntosComida <= 0) {
 					notifyObservers(new String[] { "MUERTO" });
 					cancel();
 				} 
 
 				else if (puntosVida > 0 && puntosComida > 0) {
-					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion });
+					if(seconds % 15 == 0 && puntosVida >0 && puntosComida > 0) {
+						currentPhase++;
+						notifyObservers(new String[] { evolutions[currentPhase] });
+					}
+					else {
+						
+					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, nPiruletas, nCucharadas, getEnfermedad(), getSuciedad() });
+					}
 				}
 			}
 		};
@@ -70,24 +113,73 @@ public abstract class Tamagochi extends Observable {
 		return mTamagochi;
 	}
 
+	
+	private int calcularPuntuacion(int pSegundo, boolean pEnfermo, boolean pSucio, String pEvo) {
+		return 0;
+	}
+	private int getEnfermedad() {
+		if(this.enfermedad) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	private int getSuciedad() {
+		if(this.suciedad) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
 	public void decrementarContadorVida() {
-		this.puntosVida--;
-		
-
+		if(enfermedad) {
+			puntosVida -= 7;
+		}
+		else if(suciedad) {
+			puntosVida -= 5;
+		}
+		else {
+			this.puntosComida--;
+		}
+		if(puntosComida > 40) {
+			puntosComida = 40;
+		}
 	}
-
+	
 	public void decrementarContadorComida() {
-		this.puntosComida--;
-		
+		if(enfermedad) {
+			puntosComida -= 5;
+		}
+		else if(suciedad) {
+			puntosComida -= 10;
+		}
+		else {
+			this.puntosComida--;
+		}
+		if(puntosComida > 40) {
+			puntosComida = 40;
+		}
 	}
-	public static void main(String[] args) {
-		Tamagochi t = new Tamagochi() {
-		};
-	}
+	
 	public void sumarVida() {
-		this.puntosVida += 10;
+		if(nCucharadas + nPiruletas < 4 || nPiruletas < 3) {
+			
+			this.nPiruletas++;
+			}
 	}
 	public void sumarComida() {
-		this.puntosComida += 10;
+		if(nCucharadas + nPiruletas < 4 || nCucharadas < 3) {
+		
+		this.nCucharadas++;
+		}
+	}
+	public void quitarEnf() {
+		this.enfermedad = false;
+	}
+	public void quitarSuc() {
+		this.suciedad = false;
 	}
 }
