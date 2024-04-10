@@ -1,4 +1,6 @@
 package View;
+import Model.Tamagochi;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 

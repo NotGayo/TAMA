@@ -4,7 +4,7 @@ public class Mimitchi extends Tamagochi{
 	public Mimitchi() {
 		super();
 	}
-	package Model;
+
 	
 	@Override
 	public void decrementarContadorVida() {
