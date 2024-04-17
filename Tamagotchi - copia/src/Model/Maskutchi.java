@@ -1,19 +1,16 @@
 package Model;
 
-public class Maskutchi extends Tamagochi{
+public class Maskutchi implements State{
 	
-	
-	public Maskutchi() {
-		super();
+	public int getDecrementoVida() {
+		return -3;
 	}
-	@Override
-	public void decrementarContadorVida() {
-		puntosVida = puntosVida-3;
+	public int getDecrementoComida() {
+		return -14;
 	}
-		@Override
-		public void decrementarContadorComida() {
-			puntosComida= puntosComida-14;
-		}
+	public String getNombreEvo() {
+		return "Maskutchi";
+	}
 		
 }
 

@@ -1,19 +1,15 @@
 package Model;
 
-public class Mimitchi extends Tamagochi{
-	public Mimitchi() {
-		super();
-	}
-
+public class Mimitchi implements State{
 	
-	@Override
-	public void decrementarContadorVida() {
-		puntosVida = puntosVida-7;
+	public int getDecrementoVida() {
+		return -7;
 	}
-		@Override
-	public void decrementarContadorComida() {
-		puntosComida= puntosComida-7;
+	public int getDecrementoComida() {
+		return -7;
 	}
-		
+	public String getNombreEvo() {
+		return "Mimitchi";
+	}
 }
 

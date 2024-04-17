@@ -1,16 +1,15 @@
 package Model;
 
-public class Kuchipatchi extends Tamagochi{
-	public Kuchipatchi() {
-		super();
+public class Kuchipatchi implements State{
+
+	public int getDecrementoVida() {
+		return -2;
 	}
-	@Override
-	public void decrementarContadorVida() {
-		puntosVida = puntosVida-2;
+	public int getDecrementoComida() {
+		return -5;
 	}
-	@Override
-	public void decrementarContadorComida() {
-		puntosComida= puntosComida-5;
+	public String getNombreEvo() {
+		return "Kuchipatchi";
 	}
-	
+
 }

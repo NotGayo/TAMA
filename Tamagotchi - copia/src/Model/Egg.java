@@ -1,17 +1,14 @@
 package Model;
 
-public class Egg extends Tamagochi {
+public class Egg implements State {
 	
-	public Egg() {
-		super();
+	public int getDecrementoVida() {
+		return 0;
 	}
-	@Override
-	public void decrementarContadorVida() {
-		//
+	public int getDecrementoComida() {
+		return 0;
 	}
-	@Override
-	public void decrementarContadorComida() {
-		//
-	}
-	
+	public String getNombreEvo() {
+		return "Egg";
+	}	
 }

@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
 
-public abstract class Tamagochi extends Observable {
+public class Tamagochi extends Observable {
 	protected int puntosVida;
 	protected int puntosComida;
 	private Timer timer = null;
@@ -13,6 +13,7 @@ public abstract class Tamagochi extends Observable {
 	protected int seconds = 0;
 	protected final String[] evolutions = {"egg","kuchipatchi","mimitchi","maskutchi","mametchi"};
 	protected int currentPhase = 0;
+	private State state = new Egg();
 	private Random rand = new Random();
 	private int nPiruletas = 0;
 	private int nCucharadas = 0;
@@ -27,7 +28,20 @@ public abstract class Tamagochi extends Observable {
 		this.puntosComida = 40;
 
 	}
-
+	
+	public void changeState(State pState) {
+		state = pState;
+	}
+	public int getDecVida() {
+		return state.getDecrementoVida();
+	}
+	public int getDecComida() {
+		return state.getDecrementoComida();
+	}
+	public String getNombreEvo() {
+		return state.getNombreEvo();
+	}
+	
 	public void startTamagochi() {
 		this.puntuacion = 0;
 		puntosVida = 40;
@@ -39,7 +53,11 @@ public abstract class Tamagochi extends Observable {
 				
 				// OBSERVER -- ESTE ES OBSERVABLE
 				setChanged();
-				//GENERA UN NUMERO RANDOM DE 0-39
+				
+				
+				//PARTE DE CONTADORES DE COSAS ALEATORIAS
+				
+				//RANDOM TAMADIGOUT
 				int TMD = rand.nextInt(40);
 				int goTMD = 33;
 				//SI SON IGUALES ENTONCES MANDA LA SE�AL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
@@ -47,15 +65,13 @@ public abstract class Tamagochi extends Observable {
 					notifyObservers(new String[] {"TamaDigOut"});
 					TableroModelo.getTableroModelo().startDigOut();
 				}
-				//SI SON IGUALES ENTONCES SE PONE sucio (20%)
+				//RANDOM SUCIEDAD
 				int SUC = rand.nextInt(5);
 				int goSUC = 3;
 				if(SUC == goSUC) {
 					suciedad = true;
 				}
-				
-				
-				//SI SON IGUALES ENTONCES SE PONE enfermo (30%)
+				//RANDOM ENFERMEDAD
 				int ENF1 = rand.nextInt(10);
 				int ENF2 = rand.nextInt(10);
 				int ENF3 = rand.nextInt(10);
@@ -64,8 +80,10 @@ public abstract class Tamagochi extends Observable {
 					enfermedad = true;
 				}
 				
-				//CALCULAMOS LA PUNTUACION
-				puntuacion += calcularPuntuacion(seconds, enfermedad, suciedad, evolutions[currentPhase]);
+				
+				
+				
+				
 				
 				if(puntosVida > 40) {
 					puntosVida = 40;
@@ -84,21 +102,20 @@ public abstract class Tamagochi extends Observable {
 
 				}
 				if(seconds == 15 ) {
-					currentPhase = 1;
-					notifyObservers(new String[] { evolutions[currentPhase] });
+					changeState(new Kuchipatchi());
+					notifyObservers(new String[] { state.getNombreEvo() });
 				}
 				else if(seconds == 30 ) {
-					currentPhase = 2;
-					notifyObservers(new String[] { evolutions[currentPhase] });
+					changeState(new Mimitchi());
+					notifyObservers(new String[] { state.getNombreEvo() });
 				}
 				else if(seconds == 45 && puntosVida > 20 ) {
-					puntuacion += 20;
-					currentPhase = 3;
-					notifyObservers(new String[] { evolutions[currentPhase] });
+					changeState(new Mametchi());
+					notifyObservers(new String[] { state.getNombreEvo() });
 				}
 				else if(seconds == 45 && puntosVida <= 20 ) {
-					currentPhase = 4;
-					notifyObservers(new String[] { evolutions[currentPhase] });
+					changeState(new Maskutchi());
+					notifyObservers(new String[] { state.getNombreEvo() });
 				}
 				
 				
@@ -141,10 +158,6 @@ public abstract class Tamagochi extends Observable {
 		return mTamagochi;
 	}
 
-	
-	private int calcularPuntuacion(int pSegundo, boolean pEnfermo, boolean pSucio, String pEvo) {
-		return 0;
-	}
 	public int getEnfermedad() {
 		if(this.enfermedad) {
 			return 1;
@@ -169,54 +182,14 @@ public abstract class Tamagochi extends Observable {
 	}
 	
 	public void decrementarContadorVida() {
-		if(enfermedad) {
-			puntosVida -= 5;
-		}
-		else if(suciedad) {
-			puntosVida -= 10;
-		}
-		else if(evolutions[currentPhase] == "egg") {
-			this.puntosVida -= 0;
-		}
-		else if(evolutions[currentPhase] == "kuchipatchi") {
-			this.puntosVida-=2;
-		}
-		else if(evolutions[currentPhase] == "mimitchi") {
-			this.puntosVida-=7;
-		}
-		else if(evolutions[currentPhase] == "maskutchi") {
-			this.puntosVida-=3;
-		}
-		else if(evolutions[currentPhase] == "mametchi") {
-			this.puntosVida-=1;
-		}
+		puntosVida -= state.getDecrementoVida();
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
 	}
 	
 	public void decrementarContadorComida() {
-		if(enfermedad) {
-			puntosComida -= 5;
-		}
-		else if(suciedad) {
-			puntosComida -= 10;
-		}
-		else if(evolutions[currentPhase] == "egg") {
-			this.puntosComida -= 0;
-		}
-		else if(evolutions[currentPhase] == "kuchipatchi") {
-			this.puntosComida-=5;
-		}
-		else if(evolutions[currentPhase] == "mimitchi") {
-			this.puntosComida-=7;
-		}
-		else if(evolutions[currentPhase] == "maskutchi") {
-			this.puntosComida-=14;
-		}
-		else if(evolutions[currentPhase] == "mametchi") {
-			this.puntosComida-=1;
-		}
+		puntosComida -= state.getDecrementoComida();
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
