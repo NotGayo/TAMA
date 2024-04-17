@@ -68,17 +68,26 @@ public class Juego extends JFrame implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		if (arg0 instanceof Tamagochi) { // MIENTRAS QUE LA VIDA ES MAYOR QUE 0
 			if (arg1 instanceof int[]) {
-				int[] intArray = (int[]) arg1;
-				representarPiruletas(intArray[3]);
-				representarCucharadas(intArray[4]);
-				//vida.setText(intArray[0] + "");
-				//comida.setText(intArray[1] + "");
-				puntuacion.setText("Puntuacion: " + intArray[2] + "");
-				representarCorazones(intArray[0] / 10);
-				representarComida(intArray[1] / 10);
-				interpretarEnfermedad(intArray[5]);
-				interpretarSuciedad(intArray[6]);
-
+					int[] intArray = (int[]) arg1;
+					if(intArray.length >= 3) {
+					representarPiruletas(intArray[3]);
+					representarCucharadas(intArray[4]);
+					//vida.setText(intArray[0] + "");
+					//comida.setText(intArray[1] + "");
+					puntuacion.setText("Puntuacion: " + intArray[2] + "");
+					representarCorazones(intArray[0] / 10);
+					representarComida(intArray[1] / 10);
+					if(intArray[5] == 1){enfermedad.setVisible(true);}
+					if(intArray[6] == 1){suciedad.setVisible(true);}
+					}
+					else if(intArray.length < 3) {
+						if (intArray[0] == 3332) {
+							representarCucharadas(intArray[1]);
+						}
+						else if (intArray[0] == 3333) {
+							representarCucharadas(intArray[1]);
+						}
+					}
 
 			} else if (arg1 instanceof String[]) {
 				String[] StringArray = (String[]) arg1;
@@ -104,6 +113,7 @@ public class Juego extends JFrame implements Observer {
 							new ImageIcon(Juego.class.getResource("/sprites/Maskutchi1.png")));
 
 				}
+				
 
 			} else if (arg1 instanceof double[]) {
 				double[] doubleArray = (double[]) arg1;
@@ -464,15 +474,29 @@ public class Juego extends JFrame implements Observer {
 			}
 			else if (e.getSource().equals(cucharada)) {
 				Tamagochi.getTamagochi().sumarComida();
+				representarCucharadas(Tamagochi.getTamagochi().getNCuch());
 			}
 			else if(e.getSource().equals(caramelo)) {
 				Tamagochi.getTamagochi().sumarVida();
+				representarPiruletas(Tamagochi.getTamagochi().getNPir());
 			}
 			else if(e.getSource().equals(enfermedad)) {
 				Tamagochi.getTamagochi().quitarEnf();
+				if(Tamagochi.getTamagochi().getEnfermedad() == 0) {
+					enfermedad.setVisible(false);
+				}
+				else {
+					enfermedad.setVisible(true);
+				}
 			}
 			else if(e.getSource().equals(suciedad)) {
 				Tamagochi.getTamagochi().quitarSuc();
+				if(Tamagochi.getTamagochi().getSuciedad() == 0) {
+					suciedad.setVisible(false);
+				}
+				else {
+					suciedad.setVisible(true);
+				}
 			}
 	}
 	}

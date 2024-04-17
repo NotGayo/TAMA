@@ -104,12 +104,16 @@ public abstract class Tamagochi extends Observable {
 				
 				if(seconds % 3 == 0) {
 					if(nCucharadas > 0) {
+						setChanged();
 						nCucharadas--;
 						puntosComida += 10;
+						notifyObservers(new int[] {3332, nCucharadas});
 					}
 					if(nPiruletas > 0) {
+						setChanged();
 						nPiruletas--;
 						puntosVida += 10;
+						notifyObservers(new int[] {3333, nPiruletas});
 					}
 				}
 				
@@ -141,7 +145,7 @@ public abstract class Tamagochi extends Observable {
 	private int calcularPuntuacion(int pSegundo, boolean pEnfermo, boolean pSucio, String pEvo) {
 		return 0;
 	}
-	private int getEnfermedad() {
+	public int getEnfermedad() {
 		if(this.enfermedad) {
 			return 1;
 		}
@@ -149,13 +153,19 @@ public abstract class Tamagochi extends Observable {
 			return 0;
 		}
 	}
-	private int getSuciedad() {
+	public int getSuciedad() {
 		if(this.suciedad) {
 			return 1;
 		}
 		else {
 			return 0;
 		}
+	}
+	public int getNCuch() {
+		return nCucharadas;
+	}
+	public int getNPir() {
+		return nPiruletas;
 	}
 	
 	public void decrementarContadorVida() {
@@ -213,14 +223,16 @@ public abstract class Tamagochi extends Observable {
 	}
 	
 	public void sumarVida() {
-		if(nCucharadas + nPiruletas < 4 || nPiruletas < 3) {
+		System.out.println("PIRULETAS: "+ nPiruletas);
+		if(nCucharadas + nPiruletas <= 4 || nPiruletas < 3) {
 			
 			this.nPiruletas++;
 			puntuacion += 3;
 			}
 	}
 	public void sumarComida() {
-		if(nCucharadas + nPiruletas < 4 || nCucharadas < 3) {
+		System.out.println("CUCHARADAS: "+nCucharadas);
+		if(nCucharadas + nPiruletas <= 4 || nCucharadas < 3) {
 		
 		this.nCucharadas++;
 		puntuacion += 3;
