@@ -1,301 +1,333 @@
 package View;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import Model.*;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
+public class TableroVista extends JFrame implements Observer{
+	
+	private JPanel tableroVista;
+	private Controler controler = null;
+	private KeyController KCont = null;
+	private JButton[][] botones = new JButton[8][12];
+	private JButton prevPlayer = null;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
-import Model.Bloque;
-import Model.TableroModelo;
-
-import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Observable;
-import java.util.Observer;
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-/*
- * Esta clase representa la vista del tablero del juego.
- * Extiende JFrame e implementa Observer para actualizar la vista cuando el modelo cambia.
- */
-public class TableroVista extends JFrame implements Observer {
-	private JPanel panelTablero; // Panel que contiene los botones del tablero
-    private JLabel puntuacionLabel; // Etiqueta para mostrar la puntuaci�n
-    private JLabel mensajeLabel; // Etiqueta para mostrar mensajes al usuario
-    private keyController keController = null; // Controlador para manejar eventos
-    private int puntuacion; // Puntuaci�n actual del jugador
-    private ImageIcon iconoPastelito; // Icono para representar el pastelito en los botones
-    private ImageIcon iconoTamagotchi; // Icono para representar el Tamagotchi en los botones
-    private mouseController mouController = null;
-
-
-
-	// Constructor de la clase TableroVista
-    public TableroVista(Bloque[][] bloques) {
-		TableroModelo.getTableroModelo().addObserver(this);
-        panelTablero = new JPanel(new GridLayout(bloques.length, bloques[0].length));
-        puntuacionLabel = new JLabel("Puntuaci�n: 0");
-        mensajeLabel = new JLabel("Oooh Still far away!");
-        mensajeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Agregar componentes a la ventana
-        add(puntuacionLabel, BorderLayout.NORTH);
-        add(panelTablero, BorderLayout.CENTER);
-        add(mensajeLabel, BorderLayout.SOUTH);
-
-        // Inicializar la vista del tablero
-        inicializarVista(bloques);
-        
-        // Configurar la ventana
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        
-        // Cargar las im�genes una vez al inicio
-        iconoPastelito = new ImageIcon(Juego.class.getResource("/sprites/Candy.png"));
-        iconoTamagotchi = new ImageIcon(Juego.class.getResource("/sprites/MarutchiMini1.png"));;
-           
-        setFocusable(true); // Para asegurarse de que el JFrame pueda recibir eventos de teclado
-        requestFocus(); // Solicitar el foco para que el JFrame pueda recibir eventos de teclado
-    }
-   
-    // M�todo para inicializar la vista del tablero
-    private void inicializarVista(Bloque[][] bloques) {
-        // Asignar el manejador de eventos del mouse a cada bot�n del tablero
-        for (int i = 0; i < bloques.length; i++) {
-            for (int j = 0; j < bloques[0].length; j++) {
-                Bloque bloque = bloques[i][j];
-                JButton boton = crearBoton(bloque);
-                boton.addMouseListener(getMController());
-                boton.putClientProperty("bloque", bloque);               
-                boton.addKeyListener(getKController());
-                panelTablero.add(boton);
-            }
-        }
-    }
-
-    // M�todo para crear y configurar un bot�n con base en un bloque
-    private JButton crearBoton(Bloque bloque) {
-        JButton boton = new JButton();
-        boton.setBackground(bloque.getColor());
-        return boton;
-    }
-
-    // M�todo para manejar eventos de clic del raton
-    private void manejarEventoRaton(JButton boton, Bloque bloque) {
-        if (bloque.getDureza() > 0) {
-            actualizarPuntuacion(bloque.getDureza());
-            getKController().reducirDureza(bloque);
-            boton.setBackground(bloque.getColor());
-        }
-    }
-
-    // M�todo para actualizar la puntuaci�n
-    public void actualizarPuntuacion(int puntos) {
-        puntuacion += puntos;
-        puntuacionLabel.setText("Puntuaci�n: " + puntuacion);
-    }
-
-    // M�todo para actualizar la imagen del bot�n seg�n el bloque asociado
-	private void actualizaImagenBoton(JButton boton, Bloque bloque) {
-		// TODO Auto-generated method stub
-		// Actualizar la imagen del bot�n
-		  if (bloque.contieneTamagotchi()) {
-		    boton.setIcon(iconoTamagotchi);
-		  } else {
-		    boton.setIcon(null); // Eliminar el icono si no hay Tamagotchi
-		  }
-		  if (bloque.contienePastelito()) {
-		    boton.setIcon(iconoPastelito);
-		  } 
-		  if (bloque.contienePastelito() && bloque.contieneTamagotchi()) {
-		    boton.setIcon(iconoTamagotchi);
-		  }
+	/**
+	 * Launch the application.
+	 */
+	
+			public void run() {
+				try {
+					TableroVista frame = new TableroVista();
+					frame.setVisible(true);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+	/**
+	 * Create the frame.
+	 */
+	public TableroVista() {
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		tableroVista = new JPanel();
+		tableroVista.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tableroVista.setBackground(Color.LIGHT_GRAY);
+		setContentPane(tableroVista);
+		tableroVista.setLayout(new GridLayout(8, 12, 1, 1));
+		TableroModelo.getTableroModelo().addObserver(this);
+		addWindowListener(getControler());
+		crearBotones();
+	}
+	private void crearBotones() {
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 12; j++) {
+				JButton a = new JButton("");
+				a.setName(i+"-"+j);
+				a.addMouseListener(getControler());
+				a.addActionListener(getControler());
+				tableroVista.add(a);
+				botones[i][j] = a;
+			}
+		}
+	}
+	private void cambiarColorPosBoton(int pPosX,int pPosY, int pDureza, int pPlayer) {
+		
+		JButton act = botones[pPosX][pPosY];
+		if(pDureza == 3) 
+		{
+			act.setBackground(Color.RED);
+		}
+		else if (pDureza == 2) {
+			act.setBackground(Color.ORANGE);
+		}
+		else if(pDureza == 1) {
+			 act.setBackground(Color.YELLOW);
+		}
+		else if(pDureza == 0 && pPlayer == 0) {
+			act.setVisible(false);
+		}
+	}
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		
+		if(arg0 instanceof TableroModelo ) 
+		{
+			
+			if( arg1 instanceof String[]) {
+				String[] arr = (String[]) arg1;
+				if(arr[0].equals("1111")) {
+						System.out.println("Empieza el tablero pt2");
+				
+				}
+			}
+				
+			else if(arg1 instanceof int[]) 
+			{
+					int[] durezaArray = (int[]) arg1;
+					
+					
+					
+					if(durezaArray.length == 1) 
+					{		
+						if(durezaArray[0] == 9999) 
+						{
+							dispose();					
+						}
+					}
+				
+					
+					
+					else if(durezaArray.length == 3) 
+					{
+						if(durezaArray[2] == 2323) 
+						{
+							if (prevPlayer != null) {
+								prevPlayer.setVisible(false);
+							}
+							botones[durezaArray[0]][durezaArray[1]].setVisible(true);
+							botones[durezaArray[0]][durezaArray[1]].addKeyListener(getKController());
+							botones[durezaArray[0]][durezaArray[1]].setBackground(Color.LIGHT_GRAY);
+							botones[durezaArray[0]][durezaArray[1]].setIcon(new ImageIcon(TableroVista.class.getResource("/sprites/MarutchiMini1.png")));
+							botones[durezaArray[0]][durezaArray[1]].setBorderPainted(false);
+							System.out.println("ok JUGU");
+							botones[durezaArray[0]][durezaArray[1]].grabFocus();
+							prevPlayer = botones[durezaArray[0]][durezaArray[1]];		
+						}
+						
+						
+						else if(durezaArray[2] == 3232) 
+						{
+							botones[durezaArray[0]][durezaArray[1]].setVisible(true);
+							botones[durezaArray[0]][durezaArray[1]].setBackground(Color.LIGHT_GRAY);
+							botones[durezaArray[0]][durezaArray[1]].setIcon(new ImageIcon(TableroVista.class.getResource("/sprites/hungry.png")));
+							System.out.println("ok TART");
+						}
+					}
+					else 
+					{
+							cambiarColorPosBoton(durezaArray[0], durezaArray[1], durezaArray[2], durezaArray[3]);	
+					}
+				
+				
+				
+				}
+		}
 	}
 	
-    // M�todo update de la interfaz Observer, se llama cuando el modelo del tablero cambia
-	@Override
-    public void update(Observable o, Object arg) {
-		if(o instanceof TableroModelo && arg instanceof String[]) {
-			System.out.println("entra ");
-				String[] StringArray = (String[]) arg;
-				//SI LA VIDA ES 0  Y RECIBE LA SEAL DE MUERTE
-				if (StringArray[0].equals("fin")) {
-					dispose();
-					this.setVisible(false);
-					this.dispose();
-				}   
-	        }
-        if (o instanceof TableroModelo) {
-        	
-            TableroModelo modelo = (TableroModelo) o;
-            Bloque[][] bloques = modelo.getBloques();
-            for (int i = 0; i < bloques.length; i++) {
-                for (int j = 0; j < bloques[0].length; j++) {
-                    JButton boton = (JButton) panelTablero.getComponent(i * bloques[0].length + j);
-                    Bloque bloque = bloques[i][j];
-                    if (!boton.getBackground().equals(bloque.getColor())) {
-                        boton.setBackground(bloque.getColor());
-                    }
-                    actualizaImagenBoton(boton, bloque);                    
-                }
-            }
-            revalidate();
-            repaint();
-        }
-        
+	private void setVisibleTDO() {
+		this.setVisible(true);
 	}
-	// Clase interna para manejar eventos del raton en los botones del tablero
-	private class mouseController implements MouseListener{
+	
+	private Controler getControler() {
+		if (controler == null) {
+			controler = new Controler();
+		}
+		return controler;
+	}
+	
+	private class Controler implements WindowListener, MouseListener, ActionListener {
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			TableroModelo.getTableroModelo().actualizarVista();
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		////////////////MOUSE//////////////////////
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			JButton boton = (JButton) e.getSource();
-	        Bloque bloque = (Bloque) boton.getClientProperty("bloque");
-	        manejarEventoRaton(boton, bloque);
-	        TableroModelo.getTableroModelo().acabarPartida();
+			TableroModelo.getTableroModelo().reducirDureza(e.getComponent().getName());
+			TableroModelo.getTableroModelo().actualizarVista();
+			TableroModelo.getTableroModelo().actualizarJugador();
+			TableroModelo.getTableroModelo().actualizarTarta();
+			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub		
-		}	
-	}
-    
-	
-	public mouseController getMController() {
-		if (mouController == null) {
-			mouController = new mouseController();
+			// TODO Auto-generated method stub
+			
 		}
-		return mouController;
-	}
-	private class keyController implements KeyListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 		
-		 private TableroModelo tableroModelo = null; // Referencia al modelo del tablero
-
-		 // Constructor de la clase Controlador
-	     public keyController() {    
-	    	 
-	     }
-	     
-	     // M�todo para reducir la dureza de un bloque en el modelo del tablero
-	     public void reducirDureza(Bloque bloque) {
-	    	 TableroModelo.getTableroModelo().reducirDureza(bloque);
-	     }
-	     
-	     // M�todo para establecer el modelo del tablero en el controlador
-	     private void setModeloTablero(){
-	    	 this.tableroModelo = TableroModelo.getTableroModelo();
-	     }
-	     
-	     // M�todo para manejar eventos de teclado
-	     @Override
-	     public void keyPressed(KeyEvent e) {
-	    	 switch (e.getKeyCode()) {
-	         	case KeyEvent.VK_UP:
-	         		TableroModelo.getTableroModelo().moverTamagotchi(-1, 0);
-	         		TableroModelo.getTableroModelo().acabarPartida();
-	                break;
-	            case KeyEvent.VK_DOWN:
-	            	TableroModelo.getTableroModelo().moverTamagotchi(1, 0);
-	            	TableroModelo.getTableroModelo().acabarPartida();
-	                break;
-	            case KeyEvent.VK_LEFT:
-	            	TableroModelo.getTableroModelo().moverTamagotchi(0, -1);
-	            	TableroModelo.getTableroModelo().acabarPartida();
-	                break;
-	            case KeyEvent.VK_RIGHT:
-	            	TableroModelo.getTableroModelo().moverTamagotchi(0, 1);
-	            	TableroModelo.getTableroModelo().acabarPartida();
-	                break;
-	        }
-	    }
-	 
-	     @Override
-	     public void keyTyped(KeyEvent e) {
-	    	 // TODO Auto-generated method stub
-		 }
-
-	     @Override
-	     public void keyReleased(KeyEvent e) {
-	    	 // TODO Auto-generated method stub
-		 }
-
 	}
-	public keyController getKController() {
-		if (keController == null) {
-			keController = new keyController();
+	
+	private KeyController getKController() {
+		if (KCont == null) {
+			KCont = new KeyController();
 		}
-		return keController;
+		return KCont;
+	}
+	
+	private class KeyController implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			switch (e.getKeyCode()) {
+		        	case KeyEvent.VK_UP:
+		         		//MOVER ARRIBA
+		        		System.out.println("UP");
+		        		TableroModelo.getTableroModelo().moverJugador("UP");
+		        		TableroModelo.getTableroModelo().setPlayerDone(false);
+		        		TableroModelo.getTableroModelo().actualizarVista();
+		    			TableroModelo.getTableroModelo().actualizarJugador();
+		    			TableroModelo.getTableroModelo().actualizarTarta();
+		    			TableroModelo.getTableroModelo().comprobarFin();
+		                break;
+		            case KeyEvent.VK_DOWN:
+		            	//MOVER ABAJO
+		        		System.out.println("DOWN");
+		        		TableroModelo.getTableroModelo().moverJugador("DOWN");
+		        		TableroModelo.getTableroModelo().setPlayerDone(false);
+		        		TableroModelo.getTableroModelo().actualizarVista();
+		    			TableroModelo.getTableroModelo().actualizarJugador();
+		    			TableroModelo.getTableroModelo().actualizarTarta();
+		    			TableroModelo.getTableroModelo().comprobarFin();
+
+		                break;
+		            case KeyEvent.VK_LEFT:
+		            	//MOVER IZQ
+		        		System.out.println("LEFT");
+		        		TableroModelo.getTableroModelo().moverJugador("LEFT");
+		        		TableroModelo.getTableroModelo().setPlayerDone(false);
+		        		TableroModelo.getTableroModelo().actualizarVista();
+		    			TableroModelo.getTableroModelo().actualizarJugador();
+		    			TableroModelo.getTableroModelo().actualizarTarta();
+		    			TableroModelo.getTableroModelo().comprobarFin();
+
+		                break;
+		            case KeyEvent.VK_RIGHT:
+		            	//MOVER DER
+		        		System.out.println("RIGHT");
+		        		TableroModelo.getTableroModelo().moverJugador("RIGHT");
+		        		TableroModelo.getTableroModelo().setPlayerDone(false);
+		        		TableroModelo.getTableroModelo().actualizarVista();
+		    			TableroModelo.getTableroModelo().actualizarJugador();
+		    			TableroModelo.getTableroModelo().actualizarTarta();
+		    			TableroModelo.getTableroModelo().comprobarFin();
+
+		                break;
+		        }
+		    
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }

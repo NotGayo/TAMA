@@ -5,175 +5,176 @@ import java.util.Random;
 
 import View.TableroVista;
 
-import java.util.Observable;
+public class TableroModelo extends Observable{
 
-import java.util.Observable;
-import java.util.Random;
-
-/**
- * Esta clase representa el modelo del tablero del juego.
- * Extiende Observable para notificar cambios a los observadores.
- */
-public class TableroModelo extends Observable {
-    private Bloque[][] bloques; // Matriz de bloques que representan el tablero del juego
     private static TableroModelo mTableroModelo = new TableroModelo();
-    /**
-     * Constructor de la clase TableroModelo.
-     */
-    private TableroModelo() {
-        bloques = new Bloque[12][8];
-        // Inicializa los bloques del tablero con durezas aleatorias
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 8; j++) {
-                bloques[i][j] = new BloqueFactory().crearBloque();
-            }
-        }
+    private Bloque[][] tablero;
+    int[][] numTablero = new int[8][12];
+    private Random rand = new Random();
+    private int[] posJugador = new int[2];
+    private int[] posTarta = new int[2];
+    boolean pDone = false;
+	boolean tDone = false;
+	
+
+    private TableroModelo(){
+        tablero = new Bloque[8][12];
+        crearTablero();
+        setJugador();
+        inicializarTarta();
+        System.out.println("PLAYER: "+posJugador[0]+"-"+posJugador[1]);
+        System.out.println("TARTA :"+ posTarta[0]+"-"+posTarta[1]);
+        
     }
-    public static TableroModelo getTableroModelo() {
-    	return mTableroModelo;
+
+    public static TableroModelo getTableroModelo(){
+        return mTableroModelo;
     }
-    /**
-     * M�todo para obtener la matriz de bloques del tablero.
-     * @return Matriz de bloques del tablero.
-     */
-    public Bloque[][] getBloques() {
-        return bloques;
+
+    public void startDigOut(){
+    	TableroVista tv = new TableroVista();
+    	tv.run();
+    	setChanged();
+    	notifyObservers(new String[] { "1111" });
+    	System.out.println("TABLEROMODELO -> TABLEROVISTA");
+    	tablero = new Bloque[8][12];
+        crearTablero();
+        setJugador();
+        inicializarTarta();
     }
     
-    public void startDigOut() {
-    	TableroVista tv = new TableroVista(getBloques());
-
+    private int[][] crearTablero(){
+    	int randDureza = rand.nextInt(3)+1;
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 12;j++) {
+    			randDureza = rand.nextInt(3)+1;
+    			tablero[i][j] = BloqueFactory.getBloqueFactory().crearBloque(randDureza);
+    			numTablero[i][j] = randDureza;
+    			//System.out.println("POS: "+i+","+j+","+randDureza);
+    			
+    		}
+    	}
+    	return numTablero;
+    	//System.out.println(tablero.length+" ---- "+ tablero[0].length);
+    }
+    
+    public void actualizarVista() {
+    	int randDureza;
+    	int player = 0;
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 12;j++) {
+    			randDureza = numTablero[i][j];
+    			player = 0;
+    			if(randDureza == 0 && posJugador[0] == i && posJugador[1] == j) {
+    				player = 1;
+    			}
+    			if(randDureza == 0 && posTarta[0] == i && posTarta[1] == j) {
+    				player = 1;
+    			}
+    			setChanged();
+    			notifyObservers(  new int[] {i,j, randDureza, player, 4242} );
+    			//System.out.println("POS: "+i+","+j+","+randDureza);
+    		}
+    	}
+    }
+    
+    public void actualizarJugador() {
+    	setChanged();
+    	if(numTablero[posJugador[0]][posJugador[1]] == 0 && !pDone) {
+    		pDone = true;
+    		notifyObservers(new int[] { posJugador[0],posJugador[1],2323 });
+    	}
 
     }
     
-    // M�todo para mover el Tamagotchi en el tablero.
-    public void moverTamagotchi(int diferenciaFila, int diferenciaColumna) {
-        int[] posicionActual = obtenerPosicionTamagotchi();
-        int nuevaFila = posicionActual[0] + diferenciaFila;
-        int nuevaColumna = posicionActual[1] + diferenciaColumna;
-
-        if (esPosicionValida(nuevaFila, nuevaColumna) && bloques[nuevaFila][nuevaColumna].getDureza() == 0) {
-            bloques[posicionActual[0]][posicionActual[1]].setContieneTamagotchi(false);
-            bloques[nuevaFila][nuevaColumna].setContieneTamagotchi(true);
-            
-            setChanged();
-            notifyObservers();
-        }
+    public void actualizarTarta() {
+    	setChanged();
+    	if(numTablero[posTarta[0]][posTarta[1]] == 0 && !tDone) {
+    		tDone = true;
+    		notifyObservers(new int[] { posTarta[0],posTarta[1],3232 });
+    	}
     }
     
-    // M�todo para obtener la posici�n actual del Tamagotchi en el tablero.
-    public int[] obtenerPosicionTamagotchi() {
-        for (int i = 0; i < bloques.length; i++) {
-            for (int j = 0; j < bloques[0].length; j++) {
-                if (bloques[i][j].contieneTamagotchi()) {
-                    return new int[]{i, j};
-                }
-            }
-        }
-        return null;
+    public void reducirDureza(String pPos) 
+    {
+    	String posX = null;
+    	String posY = null;
+    	
+    	if(pPos.length() == 3) {
+    		String[] pos = pPos.split("");
+    		posX = pos[0];
+    		posY = pos[2];
+    		
+    	}
+    	else if(pPos.length() == 4) {
+    		String[] pos = pPos.split("");
+    		posX = pos[0];
+    		posY = pos[2]+pos[3];
+    	}
+    	int realPosX = Integer.parseInt(posX);
+    	int realPosY = Integer.parseInt(posY);
+    	numTablero[realPosX][realPosY] -= 1;
+
     }
-    public int[] obtenerPosicionPastel() {
-        for (int i = 0; i < bloques.length; i++) {
-            for (int j = 0; j < bloques[0].length; j++) {
-                if (bloques[i][j].contienePastelito()) {
-                    return new int[]{i, j};
-                }
-            }
-        }
-        return null;
+   
+    
+    public void moverJugador(String pDireccion) {
+    	if(pDireccion.equals("UP")) {
+    		if(posJugador[0] != 0) {
+    			posJugador[0] -= 1;
+    		}
+    	}
+    	else if(pDireccion.equals("DOWN")) {
+    		if(posJugador[0] != 7) {
+    			posJugador[0] += 1;
+    		}
+    	}
+    	else if(pDireccion.equals("LEFT")) {
+    		if(posJugador[1] != 0) {
+    			posJugador[1] -= 1;
+    		}
+    	}
+    	else if(pDireccion.equals("RIGHT")) {
+    		if(posJugador[1] != 11) {
+    			posJugador[1] += 1;
+    		}
+    	}
+    	
+    	System.out.println("PLAYER: "+posJugador[0]+"-"+posJugador[1]);
     }
     
-    // M�todo para verificar si una posici�n en el tablero es v�lida.
-    private boolean esPosicionValida(int fila, int columna) {
-        return fila >= 0 && fila < bloques.length && columna >= 0 && columna < bloques[0].length && bloques[fila][columna].getDureza() == 0;
-    }
-
-
-    
-    // M�todo para verificar si el Tamagotchi se ha colocado.
-    private boolean seHaColocadoTamagotchi() {
-        for (Bloque[] fila : bloques) {
-            for (Bloque bloque : fila) {
-                if (bloque.contieneTamagotchi()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // M�todo para verificar si el Pastelito se ha colocado.
-    private boolean seHaColocadoPastelito() {
-        for (Bloque[] fila : bloques) {
-            for (Bloque bloque : fila) {
-                if (bloque.contienePastelito()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // M�todo para colocar el Tamagotchi en el tablero.
-    private void colocarTamagotchi(Bloque bloque) {
-        bloque.setContieneTamagotchi(true);
-        System.out.println("Se ha encontrado el Tamagotchi");
-    }
-    // M�todo para colocar el pastelito en el tablero.
-    private void colocarPastelito(Bloque bloque) {
-        bloque.setContienePastelito(true);
-        System.out.println("Se ha encontrado el Pastelito");
-    }
-
-    public void reducirDureza(Bloque bloque) {
-        // Reduce la dureza del bloque
-        bloque.reducirDureza();
-        // Verifica si se ha colocado un pastelito o un Tamagotchi
-        boolean pastelitoColocado = seHaColocadoPastelito();
-        boolean tamagotchiColocado = seHaColocadoTamagotchi();
-        // Coloca un pastelito o un Tamagotchi si la dureza del bloque es 0 y a�n no se ha colocado ese elemento
-        if (bloque.getDureza() == 0 && (!pastelitoColocado || !tamagotchiColocado)) {
-            Random random = new Random();
-            if (!pastelitoColocado && random.nextBoolean()) {
-                colocarPastelito(bloque);
-            } else if (!tamagotchiColocado) {
-                colocarTamagotchi(bloque);
-            }
-        }
-        // Notifica a los observadores del cambio en el tablero
-        setChanged();
-        notifyObservers();
+    public void setPlayerDone(boolean state) {
+    	pDone = state;
     }
     
-    public void acabarPartida() {
-      setChanged();
-        if (obtenerPosicionTamagotchi() != null && obtenerPosicionPastel() != null){
-
-            int[] posicionTama = obtenerPosicionTamagotchi();
-            int[] posicionPast = obtenerPosicionPastel();
-            System.out.println("TAMA: "+ posicionTama[0] + " | " + posicionTama[1]);
-            System.out.println("Pastel: "+ posicionPast[0] + " | " + posicionPast[1]);
-            if (posicionTama[0] == posicionPast[0] && posicionTama[1] == posicionPast[1]) {
-                System.out.println("correcto");
-                notifyObservers(new String[]{"fin"});
-                Tamagochi.getTamagochi().addPoints(20);
-
-            }
-        }
+    private void setJugador(){
+    	
+    	int posX = rand.nextInt(8);
+    	int posY = rand.nextInt(12);
+    	posJugador[0] = posX;
+    	posJugador[1] = posY;
     	
     }
+    private void inicializarTarta(){
+    	
+    	int posX = rand.nextInt(8);
+    	int posY = rand.nextInt(12);
+    	while(posX == posJugador[0] && posY == posJugador[1]) {
+    		posX = rand.nextInt(8);
+    		posY = rand.nextInt(12);
+    	}
+    	posTarta[0] = posX;
+    	posTarta[1] = posY;
+    }
+    
+    public void comprobarFin(){
+    	setChanged();
+        if(posJugador[0] == posTarta[0] && posJugador[1] == posTarta[1]) {
+        	notifyObservers(new int[] { 9999 });
+        	System.out.println("end");
+        	Tamagochi.getTamagochi().exitWait();
+        	Tamagochi.getTamagochi().addPoints(200);
+        }
+    }
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

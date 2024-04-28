@@ -3,6 +3,9 @@ package Model;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import View.Juego;
+
 import java.util.Random;
 
 public class Tamagochi extends Observable {
@@ -19,6 +22,7 @@ public class Tamagochi extends Observable {
 	private int nCucharadas = 0;
 	private boolean enfermedad = false;
 	private boolean suciedad = false;
+	private boolean wait = false;
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -50,102 +54,109 @@ public class Tamagochi extends Observable {
 		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
-				
-				// OBSERVER -- ESTE ES OBSERVABLE
-				setChanged();
-				
-				
-				//PARTE DE CONTADORES DE COSAS ALEATORIAS
-				
-				//RANDOM TAMADIGOUT
-				int TMD = rand.nextInt(40);
-				int goTMD = 33;
-				//SI SON IGUALES ENTONCES MANDA LA SE�AL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
-				if (TMD == goTMD) {
-					notifyObservers(new String[] {"TamaDigOut"});
-					TableroModelo.getTableroModelo().startDigOut();
-				}
-				//RANDOM SUCIEDAD
-				int SUC = rand.nextInt(5);
-				int goSUC = 3;
-				if(SUC == goSUC) {
-					suciedad = true;
-				}
-				//RANDOM ENFERMEDAD
-				int ENF1 = rand.nextInt(10);
-				int ENF2 = rand.nextInt(10);
-				int ENF3 = rand.nextInt(10);
-				int goENF = 5;
-				if(ENF1 == goENF || ENF2== goENF || ENF3 == goENF){
-					enfermedad = true;
-				}
-				
-				
-				
-				
-				
-				
-				if(puntosVida > 40) {
-					puntosVida = 40;
-				}
-				if(puntosComida > 40) {
-					puntosComida = 40;
-				}
-				seconds++;
-				if(seconds%2 == 0) {
-				decrementarContadorVida();
-				decrementarContadorComida();
-				
-				}
-				if(seconds%4 == 0) {
-					puntuacion +=1;
-
-				}
-				if(seconds == 15 ) {
-					changeState(new Kuchipatchi());
-					notifyObservers(new String[] { state.getNombreEvo() });
-				}
-				else if(seconds == 30 ) {
-					changeState(new Mimitchi());
-					notifyObservers(new String[] { state.getNombreEvo() });
-				}
-				else if(seconds == 45 && puntosVida > 20 ) {
-					changeState(new Mametchi());
-					notifyObservers(new String[] { state.getNombreEvo() });
-				}
-				else if(seconds == 45 && puntosVida <= 20 ) {
-					changeState(new Maskutchi());
-					notifyObservers(new String[] { state.getNombreEvo() });
-				}
-				
-				
-				if(seconds % 3 == 0) {
-					if(nCucharadas > 0) {
-						setChanged();
-						nCucharadas--;
-						puntosComida += 10;
-						notifyObservers(new int[] {3332, nCucharadas});
-					}
-					if(nPiruletas > 0) {
-						setChanged();
-						nPiruletas--;
-						puntosVida += 10;
-						notifyObservers(new int[] {3333, nPiruletas});
-					}
-				}
-				
-				else if (puntosVida <= 0 || puntosComida <= 0) {
-					notifyObservers(new String[] { "MUERTO" });
-					cancel();
-
-				} 
-
-				else if (puntosVida > 0 && puntosComida > 0) {
-						
-					notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, nPiruletas, nCucharadas, getEnfermedad(), getSuciedad() });
+				if(!wait) {
+					// OBSERVER -- ESTE ES OBSERVABLE
+					setChanged();
 					
+					
+					//PARTE DE CONTADORES DE COSAS ALEATORIAS
+					
+					//RANDOM TAMADIGOUT
+					int TMD = rand.nextInt(20);
+					int goTMD = 16;
+					//SI SON IGUALES ENTONCES MANDA LA SE�AL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
+					if (TMD == goTMD) {
+						wait = true;
+						setChanged();
+						notifyObservers(new String[] {"TamaDigOut"});
+						TableroModelo.getTableroModelo().startDigOut();
+						
+					}
+					//RANDOM SUCIEDAD
+					int SUC = rand.nextInt(5);
+					int goSUC = 3;
+					if(SUC == goSUC) {
+						suciedad = true;
+					}
+					//RANDOM ENFERMEDAD
+					int ENF1 = rand.nextInt(10);
+					int ENF2 = rand.nextInt(10);
+					int ENF3 = rand.nextInt(10);
+					int goENF = 5;
+					if(ENF1 == goENF || ENF2== goENF || ENF3 == goENF)
+					{
+						enfermedad = true;
+					}	
+					
+					if(puntosVida > 40) {
+						puntosVida = 40;
+					}
+					if(puntosComida > 40) {
+						puntosComida = 40;
+					}
+					seconds++;
+					if(seconds%2 == 0) {
+						decrementarContadorVida();
+						decrementarContadorComida();
+					
+					}
+					if(seconds%4 == 0) {
+						puntuacion +=1;
+	
+					}
+					if(seconds == 15 ) {
+						changeState(new Kuchipatchi());
+						notifyObservers(new String[] { state.getNombreEvo() });
+						System.out.println("evo");
+					}
+					else if(seconds == 30 ) {
+						changeState(new Mimitchi());
+						notifyObservers(new String[] { state.getNombreEvo() });
+					}
+					else if(seconds == 45 && puntosVida > 20 ) {
+						changeState(new Mametchi());
+						notifyObservers(new String[] { state.getNombreEvo() });
+					}
+					else if(seconds == 45 && puntosVida <= 20 ) {
+						changeState(new Maskutchi());
+						notifyObservers(new String[] { state.getNombreEvo() });
+					}
+					
+					
+					if(seconds % 3 == 0) {
+						if(nCucharadas > 0) {
+							setChanged();
+							nCucharadas--;
+							puntosComida += 10;
+							notifyObservers(new int[] {3332, nCucharadas});
+						}
+						if(nPiruletas > 0) {
+							setChanged();
+							nPiruletas--;
+							puntosVida += 10;
+							notifyObservers(new int[] {3333, nPiruletas});
+						}
+					}
+					
+					else if (puntosVida <= 0 || puntosComida <= 0) {
+						notifyObservers(new String[] { "MUERTO" });
+						cancel();
+	
+					} 
+	
+					else if (puntosVida > 0 && puntosComida > 0) {
+							
+						notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, nPiruletas, nCucharadas, getEnfermedad(), getSuciedad() });
+						
+					}
+					System.out.println("VIDA:"+puntosVida+", COMDIDA: "+puntosComida+", RELOJ INTERNO: "+seconds);
+					}
+				else 
+				{
+					System.out.println("espera");
 				}
 				}
+			
 			
 		};
 		timer = new Timer();
@@ -153,7 +164,6 @@ public class Tamagochi extends Observable {
 		
 		}
 	
-
 	public static Tamagochi getTamagochi() {
 		return mTamagochi;
 	}
@@ -182,14 +192,16 @@ public class Tamagochi extends Observable {
 	}
 	
 	public void decrementarContadorVida() {
-		puntosVida -= state.getDecrementoVida();
+		puntosVida += state.getDecrementoVida();
+		System.out.println(state.getDecrementoVida());
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
 	}
 	
 	public void decrementarContadorComida() {
-		puntosComida -= state.getDecrementoComida();
+		puntosComida += state.getDecrementoComida();
+		System.out.println(state.getDecrementoComida());
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
@@ -221,8 +233,12 @@ public class Tamagochi extends Observable {
 
 		puntuacion += pPoints;
 		System.out.println("Puntos añadidos: " + puntuacion);
-		setChanged();
-		notifyObservers(new double[] {2.03});
+	}
+	public void exitWait() {
+		wait = false;
+		System.out.println("wait false");
+		Juego j = new Juego();
+		j.run();
 	}
 
 

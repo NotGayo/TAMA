@@ -3,7 +3,7 @@ package Model;
 
 
 /**
- * Interfaz para la fábrica de bloques.
+ * Interfaz para la fbrica de bloques.
  */
 public interface BloqueFactoryInter {
     Bloque crearBloque();

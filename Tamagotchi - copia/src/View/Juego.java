@@ -66,7 +66,10 @@ public class Juego extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if (arg0 instanceof Tamagochi) { // MIENTRAS QUE LA VIDA ES MAYOR QUE 0
+		if (arg0 instanceof Tamagochi) 
+		{ 
+		// MIENTRAS QUE LA VIDA ES MAYOR QUE 0
+			
 			if (arg1 instanceof int[]) {
 					int[] intArray = (int[]) arg1;
 					if(intArray.length >= 3) {
@@ -92,35 +95,34 @@ public class Juego extends JFrame implements Observer {
 			} else if (arg1 instanceof String[]) {
 				String[] StringArray = (String[]) arg1;
 				//SI LA VIDA ES 0  Y RECIBE LA SE�AL DE MUERTE
-				if (StringArray[0] == "MUERTO") {
+				if (StringArray[0] == "MUERTO")
+				{
 					deathScreen();
-				} else if (StringArray[0] == "TamaDigOut") {
+				}
+				
+				else if (StringArray[0] == "TamaDigOut") {
 					//SALTAR A TAMA DIG OUT
-					this.setVisible(false);
+					dispose();
 
-				} else if (StringArray[0] == "kuchipatchi") {
+				}
+				
+				else if (StringArray[0] == "Kuchipatchi") {
 					//CAMBIAR EVOLUCION DEL TAMAGOTCHI
 					System.out.println("KUTCHIPACHI");
 					personaje.setIcon(
 							new ImageIcon(Juego.class.getResource("/sprites/Kuchipatchi1.png")));
-				} else if (StringArray[0] == "mimitchi") {
+				} else if (StringArray[0] == "Mimitchi") {
 					System.out.println("KUTCHIPACH2EADSI");
 					personaje.setIcon(
 							new ImageIcon(Juego.class.getResource("/sprites/Mimitchi1.png")));
-				} else if (StringArray[0] == "maskutchi") {
+				} else if (StringArray[0] == "Maskutchi") {
 					System.out.println("KUTCHIPACHISSSSSSSSSSSSSS");
 					personaje.setIcon(
 							new ImageIcon(Juego.class.getResource("/sprites/Maskutchi1.png")));
 
 				}
-				
-
-			} else if (arg1 instanceof double[]) {
-				double[] doubleArray = (double[]) arg1;
-				if (doubleArray[0] == 2.03) {
-					this.setVisible(true);
-				}
-			}
+			
+			} 
 
 		}
 	}
