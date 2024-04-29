@@ -17,12 +17,14 @@ public class Tamagochi extends Observable {
 	protected final String[] evolutions = {"egg","kuchipatchi","mimitchi","maskutchi","mametchi"};
 	protected int currentPhase = 0;
 	private State state = new Egg();
+	private SaludState salState = new Limpio();
 	private Random rand = new Random();
 	private int nPiruletas = 0;
 	private int nCucharadas = 0;
 	private boolean enfermedad = false;
 	private boolean suciedad = false;
 	private boolean wait = false;
+	
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -35,6 +37,9 @@ public class Tamagochi extends Observable {
 	
 	public void changeState(State pState) {
 		state = pState;
+	}
+	public void changeSaludState(SaludState pSState) {
+		salState = pSState;
 	}
 	public int getDecVida() {
 		return state.getDecrementoVida();
@@ -86,7 +91,22 @@ public class Tamagochi extends Observable {
 					if(ENF1 == goENF || ENF2== goENF || ENF3 == goENF)
 					{
 						enfermedad = true;
+						
 					}	
+					
+					if(suciedad && enfermedad) {
+						changeSaludState(new SucioEnfermo());
+					}
+					else if(!suciedad && enfermedad) {
+						changeSaludState(new Enfermo());
+					}
+					else if(suciedad && !enfermedad) {
+						changeSaludState(new Sucio());
+					}
+					else if(!suciedad && !enfermedad) {
+						changeSaludState(new Limpio());
+					}
+					
 					
 					if(puntosVida > 40) {
 						puntosVida = 40;
@@ -98,6 +118,7 @@ public class Tamagochi extends Observable {
 					if(seconds%2 == 0) {
 						decrementarContadorVida();
 						decrementarContadorComida();
+						actualizarPuntuacion();
 					
 					}
 					if(seconds%4 == 0) {
@@ -193,7 +214,7 @@ public class Tamagochi extends Observable {
 	
 	public void decrementarContadorVida() {
 		puntosVida += state.getDecrementoVida();
-		System.out.println(state.getDecrementoVida());
+		puntosVida += salState.getDecrementoVida();
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
@@ -201,10 +222,14 @@ public class Tamagochi extends Observable {
 	
 	public void decrementarContadorComida() {
 		puntosComida += state.getDecrementoComida();
-		System.out.println(state.getDecrementoComida());
+		puntosComida += salState.getDecrementoComida();
 		if(puntosComida > 40) {
 			puntosComida = 40;
 		}
+	}
+	
+	private void actualizarPuntuacion() {
+		puntuacion += salState.getAumentoPuntuacion();
 	}
 	
 	public void sumarVida() {
