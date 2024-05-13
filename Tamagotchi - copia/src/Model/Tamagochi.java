@@ -95,16 +95,16 @@ public class Tamagochi extends Observable {
 						
 					}	
 					
-					if(suciedad && enfermedad) {
+					if(suciedad && enfermedad && !salState.getNombreEvo().equals("SucioEnfermo")) {
 						changeSaludState(new SucioEnfermo());
 					}
-					else if(!suciedad && enfermedad) {
+					else if(!suciedad && enfermedad && !salState.getNombreEvo().equals("Enfermo")) {
 						changeSaludState(new Enfermo());
 					}
-					else if(suciedad && !enfermedad) {
+					else if(suciedad && !enfermedad && !salState.getNombreEvo().equals("Sucio")) {
 						changeSaludState(new Sucio());
 					}
-					else if(!suciedad && !enfermedad) {
+					else if(!suciedad && !enfermedad && !salState.getNombreEvo().equals("Limpio")) {
 						changeSaludState(new Limpio());
 					}
 					
@@ -226,10 +226,7 @@ public class Tamagochi extends Observable {
 		puntuacion += salState.getAumentoPuntuacion();
 	}
 	
-	
-	
-	
-	
+
 	public void sumarVida() 
 	{
 		if(!comiendo) {
@@ -245,7 +242,6 @@ public class Tamagochi extends Observable {
 			nCucharadas++;
 		}
 	}
-	
 	
 	public void quitarEnf() {
 		this.enfermedad = false;
@@ -263,9 +259,6 @@ public class Tamagochi extends Observable {
 		System.out.println("wait false");
 		Juego j = new Juego();
 		j.run();
-	}
-	public void enterWait() {
-		wait = true;
 	}
 	
 	public void iniciarCardGame() {

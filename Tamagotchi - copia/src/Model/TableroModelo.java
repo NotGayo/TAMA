@@ -35,6 +35,10 @@ public class TableroModelo extends Observable{
     	TableroVista tv = new TableroVista();
     	tv.run();
     	setChanged();
+    	posJugador = new int[2];
+    	posTarta = new int[2];
+    	pDone = false;
+    	tDone = false;
     	notifyObservers(new String[] { "1111" });
     	System.out.println("TABLEROMODELO -> TABLEROVISTA");
     	tablero = new Bloque[8][12];
@@ -174,6 +178,12 @@ public class TableroModelo extends Observable{
         	System.out.println("end");
         	Tamagochi.getTamagochi().exitWait();
         	Tamagochi.getTamagochi().addPoints(200);
+        }
+        else if(numTablero[posJugador[0]][posJugador[1]] > 0) {
+        	notifyObservers(new int[] { 9999 });
+        	System.out.println("end");
+        	Tamagochi.getTamagochi().exitWait();
+        	Tamagochi.getTamagochi().addPoints(-100);
         }
     }
     
