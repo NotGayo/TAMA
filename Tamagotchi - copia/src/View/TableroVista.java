@@ -146,6 +146,7 @@ public class TableroVista extends JFrame implements Observer{
 							botones[durezaArray[0]][durezaArray[1]].setVisible(true);
 							botones[durezaArray[0]][durezaArray[1]].setBackground(Color.LIGHT_GRAY);
 							botones[durezaArray[0]][durezaArray[1]].setIcon(new ImageIcon(TableroVista.class.getResource("/sprites/hungry.png")));
+							botones[durezaArray[0]][durezaArray[1]].setBorderPainted(false);
 							System.out.println("ok TART");
 						}
 					}
