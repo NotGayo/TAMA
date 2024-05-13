@@ -24,7 +24,8 @@ public class Tamagochi extends Observable {
 	private boolean enfermedad = false;
 	private boolean suciedad = false;
 	private boolean wait = false;
-	
+	private ComboComida combo = new ComboComida();
+	private boolean comiendo = false;
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -67,8 +68,8 @@ public class Tamagochi extends Observable {
 					//PARTE DE CONTADORES DE COSAS ALEATORIAS
 					
 					//RANDOM TAMADIGOUT
-					int TMD = rand.nextInt(20);
-					int goTMD = 16;
+					int TMD = rand.nextInt(40);
+					int goTMD = 33;
 					//SI SON IGUALES ENTONCES MANDA LA SE�AL DEL OBSERVER PARA INICIZLIZAR EL TAMADIGOUT 
 					if (TMD == goTMD) {
 						wait = true;
@@ -125,6 +126,18 @@ public class Tamagochi extends Observable {
 						puntuacion +=1;
 	
 					}
+					
+					if(seconds % 4 == 0) {
+						comiendo = true;
+						combo.consumirElementos();
+						System.out.println(combo.getValorVida());
+						System.out.println(combo.getValorComida());
+						puntosVida += combo.getValorVida();
+						puntosComida += combo.getValorComida();
+						nCucharadas = 0;
+						nPiruletas = 0;
+						comiendo = false;
+					}
 					if(seconds == 15 ) {
 						changeState(new Kuchipatchi());
 						notifyObservers(new String[] { state.getNombreEvo() });
@@ -144,21 +157,6 @@ public class Tamagochi extends Observable {
 					}
 					
 					
-					if(seconds % 3 == 0) {
-						if(nCucharadas > 0) {
-							setChanged();
-							nCucharadas--;
-							puntosComida += 10;
-							notifyObservers(new int[] {3332, nCucharadas});
-						}
-						if(nPiruletas > 0) {
-							setChanged();
-							nPiruletas--;
-							puntosVida += 10;
-							notifyObservers(new int[] {3333, nPiruletas});
-						}
-					}
-					
 					else if (puntosVida <= 0 || puntosComida <= 0) {
 						notifyObservers(new String[] { "MUERTO" });
 						cancel();
@@ -172,10 +170,6 @@ public class Tamagochi extends Observable {
 					}
 					System.out.println("VIDA:"+puntosVida+", COMDIDA: "+puntosComida+", RELOJ INTERNO: "+seconds);
 					}
-				else 
-				{
-					System.out.println("espera");
-				}
 				}
 			
 			
@@ -232,22 +226,27 @@ public class Tamagochi extends Observable {
 		puntuacion += salState.getAumentoPuntuacion();
 	}
 	
-	public void sumarVida() {
-		System.out.println("PIRULETAS: "+ nPiruletas);
-		if(nCucharadas + nPiruletas <= 4 || nPiruletas < 3) {
-			
-			this.nPiruletas++;
-			puntuacion += 3;
-			}
-	}
-	public void sumarComida() {
-		System.out.println("CUCHARADAS: "+nCucharadas);
-		if(nCucharadas + nPiruletas <= 4 || nCucharadas < 3) {
-		
-		this.nCucharadas++;
-		puntuacion += 3;
+	
+	
+	
+	
+	public void sumarVida() 
+	{
+		if(!comiendo) {
+			combo.addComible(new Piruleta());
+			nPiruletas++;
 		}
 	}
+	
+	public void sumarComida() 
+	{
+		if(!comiendo) {
+			combo.addComible(new Cucharada());
+			nCucharadas++;
+		}
+	}
+	
+	
 	public void quitarEnf() {
 		this.enfermedad = false;
 	}
@@ -264,6 +263,16 @@ public class Tamagochi extends Observable {
 		System.out.println("wait false");
 		Juego j = new Juego();
 		j.run();
+	}
+	public void enterWait() {
+		wait = true;
+	}
+	
+	public void iniciarCardGame() {
+		wait = true;
+		setChanged();
+		notifyObservers(new String[] { "TamaDigOut" });
+		Tablero.getTablero().empezar();
 	}
 
 

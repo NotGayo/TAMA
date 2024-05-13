@@ -13,13 +13,13 @@ public class BloqueFactory {
 	
 	public Bloque crearBloque(int pDureza) {
 		if(pDureza == 1) {
-			return new Bloque(pDureza);
+			return new BloqueBlando();
 		}
 		else if(pDureza == 2) {
-			return new Bloque(pDureza);
+			return new BloqueMedio();
 		}
 		else if(pDureza == 3) {
-			return new Bloque(pDureza);
+			return new BloqueDuro();
 		}
 		
 		return null;
