@@ -50,7 +50,7 @@ public class Juego extends JFrame implements Observer {
 	JLabel c1 = new JLabel("");
 	JButton enfermedad = new JButton("");
 	JButton suciedad = new JButton("");
-
+	JButton cardGame;
 	/**
 	 * Launch the application.
 	 */
@@ -382,39 +382,39 @@ public class Juego extends JFrame implements Observer {
 		
 		
 		p3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
-		p3.setBounds(102, 289, 35, 38);
+		p3.setBounds(80, 289, 35, 38);
 		contentPane.add(p3);
 		
 		
 		p2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
-		p2.setBounds(147, 289, 35, 38);
+		p2.setBounds(125, 289, 35, 38);
 		contentPane.add(p2);
 		
 		
 		p1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/candy.png")));
-		p1.setBounds(189, 289, 35, 38);
+		p1.setBounds(167, 289, 35, 38);
 		contentPane.add(p1);
 		
 		
 		c3.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
-		c3.setBounds(339, 289, 35, 38);
+		c3.setBounds(377, 289, 35, 38);
 		contentPane.add(c3);
 		
 		
 		c2.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
-		c2.setBounds(295, 289, 35, 38);
+		c2.setBounds(333, 289, 35, 38);
 		contentPane.add(c2);
 		
 		c1.setIcon(new ImageIcon(Juego.class.getResource("/sprites/spoon.png")));
-		c1.setBounds(249, 289, 35, 38);
+		c1.setBounds(287, 289, 35, 38);
 		contentPane.add(c1);
 		
 		Box horizontalBox = Box.createHorizontalBox();
-		horizontalBox.setBounds(99, 289, 125, 44);
+		horizontalBox.setBounds(77, 289, 125, 44);
 		contentPane.add(horizontalBox);
 		
 		Box horizontalBox_1 = Box.createHorizontalBox();
-		horizontalBox_1.setBounds(234, 289, 130, 44);
+		horizontalBox_1.setBounds(272, 289, 130, 44);
 		contentPane.add(horizontalBox_1);
 		enfermedad.setBackground(Color.BLACK);
 		
@@ -430,6 +430,14 @@ public class Juego extends JFrame implements Observer {
 		suciedad.setIcon(new ImageIcon(Juego.class.getResource("/sprites/kk.png")));
 		suciedad.setBounds(295, 178, 86, 62);
 		contentPane.add(suciedad);
+		
+		cardGame = new JButton("");
+		cardGame.setForeground(Color.BLACK);
+		cardGame.setIcon(new ImageIcon(Juego.class.getResource("/sprites/gamegame.jpg")));
+		cardGame.setBackground(Color.BLACK);
+		cardGame.setBounds(212, 289, 50, 38);
+		contentPane.add(cardGame);
+		cardGame.addActionListener(getControler());
 		suciedad.addActionListener(getControler());
 		suciedad.setVisible(false);
 		
@@ -499,6 +507,11 @@ public class Juego extends JFrame implements Observer {
 				else {
 					suciedad.setVisible(true);
 				}
+			}
+			else if(e.getSource().equals(cardGame)) {
+				System.out.println("cardgame");
+				Tamagochi.getTamagochi().iniciarCardGame();
+				dispose();
 			}
 	}
 	}

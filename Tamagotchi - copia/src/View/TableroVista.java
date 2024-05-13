@@ -237,6 +237,7 @@ public class TableroVista extends JFrame implements Observer{
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
 			TableroModelo.getTableroModelo().reducirDureza(e.getComponent().getName());
+			//todo en reducir dureza 
 			TableroModelo.getTableroModelo().actualizarVista();
 			TableroModelo.getTableroModelo().actualizarJugador();
 			TableroModelo.getTableroModelo().actualizarTarta();
@@ -280,6 +281,7 @@ public class TableroVista extends JFrame implements Observer{
 		         		//MOVER ARRIBA
 		        		System.out.println("UP");
 		        		TableroModelo.getTableroModelo().moverJugador("UP");
+						//METER TODO EN MOVER JUGADOR
 		        		TableroModelo.getTableroModelo().setPlayerDone(false);
 		        		TableroModelo.getTableroModelo().actualizarVista();
 		    			TableroModelo.getTableroModelo().actualizarJugador();
