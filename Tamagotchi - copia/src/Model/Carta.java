@@ -29,14 +29,17 @@ public class Carta {
 		if(e.equals("Volteada")) {
 			s = new Volteada();
 			this.estado=s;
+			system.out.println("cambiado el estado a volteada")
 		}
 		else if (e.equals("SinVoltear")){
 			s = new SinVoltear();
 			this.estado=s;
+			system.out.println("cambiado el estado a sin voltear")
 	}
 		else if(e.equals("Desabilitada")) {
 			s = new Desabilitada();
 			this.estado=s;
+			system.out.println("cambiado el estado a desabilitada")
 		}
 }
 }
