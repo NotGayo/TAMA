@@ -63,7 +63,7 @@ public class Tablero extends Observable {
 		boolean estaVolteada = c.estaVolteada();
 		if (!estaVolteada) {
 			c.darVuelta();
-			c.cambiarEstado("Voltaeada");
+			c.cambiarEstado("Volteada");
 		}
 		
 		setChanged();	
@@ -86,8 +86,8 @@ public class Tablero extends Observable {
 		else {
 			c1.darVuelta();
 			c2.darVuelta();
-			c1.cambiarEstado("Volteada");
-			c2.cambiarEstado("Volteada");
+			c1.cambiarEstado("SinVoltear");
+			c2.cambiarEstado("SinVoltear");
 			setChanged();
 			notifyObservers(new int[] {222,fila1,col1,fila2,col2,c1.getId(),c2.getId()});
 			return false;
