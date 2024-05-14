@@ -51,6 +51,7 @@ public class Juego extends JFrame implements Observer {
 	JButton enfermedad = new JButton("");
 	JButton suciedad = new JButton("");
 	JButton cardGame;
+	JLabel foodTime = new JLabel("");
 	/**
 	 * Launch the application.
 	 */
@@ -65,65 +66,40 @@ public class Juego extends JFrame implements Observer {
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable arg0, Object arg1) 
+	{
 		if (arg0 instanceof Tamagochi) 
 		{ 
 		// MIENTRAS QUE LA VIDA ES MAYOR QUE 0
 			
-			if (arg1 instanceof int[]) {
+			if (arg1 instanceof int[])
+			{
 					int[] intArray = (int[]) arg1;
-					if(intArray.length >= 3) {
-					representarPiruletas(intArray[3]);
-					representarCucharadas(intArray[4]);
-					//vida.setText(intArray[0] + "");
-					//comida.setText(intArray[1] + "");
-					puntuacion.setText("Puntuacion: " + intArray[2] + "");
-					representarCorazones(intArray[0] / 10);
-					representarComida(intArray[1] / 10);
-					if(intArray[5] == 1){enfermedad.setVisible(true);}
-					if(intArray[6] == 1){suciedad.setVisible(true);}
+					if(intArray.length >= 3) 
+					{
+						representarPiruletas(intArray[3]);
+						representarCucharadas(intArray[4]);
+						puntuacion.setText("Puntuacion: " + intArray[2] + "");
+						representarCorazones(intArray[0] / 10);
+						representarComida(intArray[1] / 10);
+						if(intArray[5] == 1) {enfermedad.setVisible(true);}
+						if(intArray[6] == 1) {suciedad.setVisible(true);}
+						foodTime.setText("TIME TO EAT: "+ (4-intArray[7]) +"!");
 					}
-					else if(intArray.length < 3) {
-						if (intArray[0] == 3332) {
-							representarCucharadas(intArray[1]);
-						}
-						else if (intArray[0] == 3333) {
-							representarCucharadas(intArray[1]);
-						}
-					}
-
-			} else if (arg1 instanceof String[]) {
-				String[] StringArray = (String[]) arg1;
-				//SI LA VIDA ES 0  Y RECIBE LA SE�AL DE MUERTE
-				if (StringArray[0] == "MUERTO")
-				{
-					deathScreen();
-				}
-				
-				else if (StringArray[0] == "TamaDigOut") {
-					//SALTAR A TAMA DIG OUT
-					dispose();
-
-				}
-				
-				else if (StringArray[0] == "Kuchipatchi") {
-					//CAMBIAR EVOLUCION DEL TAMAGOTCHI
-					System.out.println("KUTCHIPACHI");
-					personaje.setIcon(
-							new ImageIcon(Juego.class.getResource("/sprites/Kuchipatchi1.png")));
-				} else if (StringArray[0] == "Mimitchi") {
-					System.out.println("KUTCHIPACH2EADSI");
-					personaje.setIcon(
-							new ImageIcon(Juego.class.getResource("/sprites/Mimitchi1.png")));
-				} else if (StringArray[0] == "Maskutchi") {
-					System.out.println("KUTCHIPACHISSSSSSSSSSSSSS");
-					personaje.setIcon(
-							new ImageIcon(Juego.class.getResource("/sprites/Maskutchi1.png")));
-
-				}
+			}
 			
+			else if (arg1 instanceof String[]) 
+			{
+				String[] StringArray = (String[]) arg1;
+				//PANTALLA MUERTE
+				if (StringArray[0] == "MUERTO") {deathScreen();}
+				//TDO
+				else if (StringArray[0] == "TamaDigOut") {dispose();}
+				//EVOLUCIONES
+				else if (StringArray[0] == "Kuchipatchi") {personaje.setIcon(new ImageIcon(Juego.class.getResource("/sprites/Kuchipatchi1.png")));}
+				else if (StringArray[0] == "Mimitchi") {personaje.setIcon(new ImageIcon(Juego.class.getResource("/sprites/Mimitchi1.png")));} 
+				else if (StringArray[0] == "Maskutchi") {personaje.setIcon(new ImageIcon(Juego.class.getResource("/sprites/Maskutchi1.png")));}
 			} 
-
 		}
 	}
 	private void deathScreen() {
@@ -437,6 +413,11 @@ public class Juego extends JFrame implements Observer {
 		cardGame.setBackground(Color.BLACK);
 		cardGame.setBounds(212, 289, 50, 38);
 		contentPane.add(cardGame);
+		
+		
+		foodTime.setForeground(Color.WHITE);
+		foodTime.setBounds(177, 340, 116, 13);
+		contentPane.add(foodTime);
 		cardGame.addActionListener(getControler());
 		suciedad.addActionListener(getControler());
 		suciedad.setVisible(false);
@@ -482,34 +463,44 @@ public class Juego extends JFrame implements Observer {
 
 
 			}
-			else if (e.getSource().equals(cucharada)) {
+			else if (e.getSource().equals(cucharada)) 
+			{
 				Tamagochi.getTamagochi().sumarComida();
 				representarCucharadas(Tamagochi.getTamagochi().getNCuch());
 			}
-			else if(e.getSource().equals(caramelo)) {
+			
+			else if(e.getSource().equals(caramelo)) 
+			{
 				Tamagochi.getTamagochi().sumarVida();
 				representarPiruletas(Tamagochi.getTamagochi().getNPir());
 			}
-			else if(e.getSource().equals(enfermedad)) {
+			
+			else if(e.getSource().equals(enfermedad)) 
+			{
 				Tamagochi.getTamagochi().quitarEnf();
-				if(Tamagochi.getTamagochi().getEnfermedad() == 0) {
+				if(Tamagochi.getTamagochi().getEnfermedad() == 0) 
+				{
 					enfermedad.setVisible(false);
 				}
-				else {
+				else 
+				{
 					enfermedad.setVisible(true);
 				}
 			}
-			else if(e.getSource().equals(suciedad)) {
+			else if(e.getSource().equals(suciedad)) 
+			{
 				Tamagochi.getTamagochi().quitarSuc();
-				if(Tamagochi.getTamagochi().getSuciedad() == 0) {
+				if(Tamagochi.getTamagochi().getSuciedad() == 0) 
+				{
 					suciedad.setVisible(false);
 				}
-				else {
+				else 
+				{
 					suciedad.setVisible(true);
 				}
 			}
-			else if(e.getSource().equals(cardGame)) {
-				System.out.println("cardgame");
+			else if(e.getSource().equals(cardGame)) 
+			{
 				Tamagochi.getTamagochi().iniciarCardGame();
 				dispose();
 			}

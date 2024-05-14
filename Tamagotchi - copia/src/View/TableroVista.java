@@ -111,8 +111,6 @@ public class TableroVista extends JFrame implements Observer{
 			{
 					int[] durezaArray = (int[]) arg1;
 					
-					
-					
 					if(durezaArray.length == 1) 
 					{		
 						if(durezaArray[0] == 9999) 
@@ -121,13 +119,13 @@ public class TableroVista extends JFrame implements Observer{
 						}
 					}
 				
-					
-					
+
 					else if(durezaArray.length == 3) 
 					{
 						if(durezaArray[2] == 2323) 
 						{
-							if (prevPlayer != null) {
+							if (prevPlayer != null) 
+							{
 								prevPlayer.setVisible(false);
 							}
 							botones[durezaArray[0]][durezaArray[1]].setVisible(true);
@@ -155,9 +153,7 @@ public class TableroVista extends JFrame implements Observer{
 							cambiarColorPosBoton(durezaArray[0], durezaArray[1], durezaArray[2], durezaArray[3]);	
 					}
 				
-				
-				
-				}
+			}
 		}
 	}
 	
@@ -239,10 +235,6 @@ public class TableroVista extends JFrame implements Observer{
 			// TODO Auto-generated method stub
 			TableroModelo.getTableroModelo().reducirDureza(e.getComponent().getName());
 			//todo en reducir dureza 
-			TableroModelo.getTableroModelo().actualizarVista();
-			TableroModelo.getTableroModelo().actualizarJugador();
-			TableroModelo.getTableroModelo().actualizarTarta();
-			
 		}
 
 		@Override
@@ -280,47 +272,19 @@ public class TableroVista extends JFrame implements Observer{
 			switch (e.getKeyCode()) {
 		        	case KeyEvent.VK_UP:
 		         		//MOVER ARRIBA
-		        		System.out.println("UP");
-		        		TableroModelo.getTableroModelo().moverJugador("UP");
-						//METER TODO EN MOVER JUGADOR
-		        		TableroModelo.getTableroModelo().setPlayerDone(false);
-		        		TableroModelo.getTableroModelo().actualizarVista();
-		    			TableroModelo.getTableroModelo().actualizarJugador();
-		    			TableroModelo.getTableroModelo().actualizarTarta();
-		    			TableroModelo.getTableroModelo().comprobarFin();
-		                break;
+		        		TableroModelo.getTableroModelo().mover("UP");
+		        		break;
 		            case KeyEvent.VK_DOWN:
 		            	//MOVER ABAJO
-		        		System.out.println("DOWN");
-		        		TableroModelo.getTableroModelo().moverJugador("DOWN");
-		        		TableroModelo.getTableroModelo().setPlayerDone(false);
-		        		TableroModelo.getTableroModelo().actualizarVista();
-		    			TableroModelo.getTableroModelo().actualizarJugador();
-		    			TableroModelo.getTableroModelo().actualizarTarta();
-		    			TableroModelo.getTableroModelo().comprobarFin();
-
+		        		TableroModelo.getTableroModelo().mover("DOWN");
 		                break;
 		            case KeyEvent.VK_LEFT:
 		            	//MOVER IZQ
-		        		System.out.println("LEFT");
-		        		TableroModelo.getTableroModelo().moverJugador("LEFT");
-		        		TableroModelo.getTableroModelo().setPlayerDone(false);
-		        		TableroModelo.getTableroModelo().actualizarVista();
-		    			TableroModelo.getTableroModelo().actualizarJugador();
-		    			TableroModelo.getTableroModelo().actualizarTarta();
-		    			TableroModelo.getTableroModelo().comprobarFin();
-
+		        		TableroModelo.getTableroModelo().mover("LEFT");
 		                break;
 		            case KeyEvent.VK_RIGHT:
 		            	//MOVER DER
-		        		System.out.println("RIGHT");
-		        		TableroModelo.getTableroModelo().moverJugador("RIGHT");
-		        		TableroModelo.getTableroModelo().setPlayerDone(false);
-		        		TableroModelo.getTableroModelo().actualizarVista();
-		    			TableroModelo.getTableroModelo().actualizarJugador();
-		    			TableroModelo.getTableroModelo().actualizarTarta();
-		    			TableroModelo.getTableroModelo().comprobarFin();
-
+		            	TableroModelo.getTableroModelo().mover("RIGHT");
 		                break;
 		        }
 		    
