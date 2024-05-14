@@ -27,9 +27,10 @@ public class Tablero extends Observable {
 		this.parejas=6;
 		this.parejasEncontradas=0;
 		
+		CartaState estad= new SinVoltear();
 		ArrayList<Carta>c = new ArrayList<Carta>();
 		for(int i=0;i<this.parejas;i++) {
-			Carta k= new Carta(i);
+			Carta k= new Carta(i,estad);
 			c.add(k);
 			c.add(k);
 			
@@ -62,6 +63,7 @@ public class Tablero extends Observable {
 		boolean estaVolteada = c.estaVolteada();
 		if (!estaVolteada) {
 			c.darVuelta();
+			c.cambiarEstado("Voltaeada");
 		}
 		
 		setChanged();	
@@ -75,6 +77,8 @@ public class Tablero extends Observable {
 		
 		if(c1.getId()==c2.getId()) {
 			this.parejasEncontradas++;
+			c1.cambiarEstado("Desabilitada");
+			c2.cambiarEstado("Desabilitada");
 			setChanged();
 			notifyObservers(new int[] {333,fila1,col1,fila2,col2});
 			return true;
@@ -82,6 +86,8 @@ public class Tablero extends Observable {
 		else {
 			c1.darVuelta();
 			c2.darVuelta();
+			c1.cambiarEstado("Volteada");
+			c2.cambiarEstado("Volteada");
 			setChanged();
 			notifyObservers(new int[] {222,fila1,col1,fila2,col2,c1.getId(),c2.getId()});
 			return false;
