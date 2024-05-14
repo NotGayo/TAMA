@@ -26,6 +26,7 @@ public class Tamagochi extends Observable {
 	private boolean wait = false;
 	private ComboComida combo = new ComboComida();
 	private boolean comiendo = false;
+	private int contComida = 0;
 	private static Tamagochi mTamagochi = new Tamagochi() {
 	};
 
@@ -116,6 +117,7 @@ public class Tamagochi extends Observable {
 						puntosComida = 40;
 					}
 					seconds++;
+					contComida++;
 					if(seconds%2 == 0) {
 						decrementarContadorVida();
 						decrementarContadorComida();
@@ -137,6 +139,7 @@ public class Tamagochi extends Observable {
 						nCucharadas = 0;
 						nPiruletas = 0;
 						comiendo = false;
+						contComida = 0;
 					}
 					if(seconds == 15 ) {
 						changeState(new Kuchipatchi());
@@ -165,7 +168,7 @@ public class Tamagochi extends Observable {
 	
 					else if (puntosVida > 0 && puntosComida > 0) {
 							
-						notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, nPiruletas, nCucharadas, getEnfermedad(), getSuciedad() });
+						notifyObservers(new int[] { puntosVida, puntosComida, puntuacion, nPiruletas, nCucharadas, getEnfermedad(), getSuciedad(),contComida });
 						
 					}
 					System.out.println("VIDA:"+puntosVida+", COMDIDA: "+puntosComida+", RELOJ INTERNO: "+seconds);
@@ -245,6 +248,7 @@ public class Tamagochi extends Observable {
 	
 	public void quitarEnf() {
 		this.enfermedad = false;
+		
 	}
 	public void quitarSuc() {
 		this.suciedad = false;

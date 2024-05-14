@@ -82,7 +82,7 @@ public class TableroModelo extends Observable{
     	}
     }
     
-    public void actualizarJugador() {
+    private void actualizarJugador() {
     	setChanged();
     	if(numTablero[posJugador[0]][posJugador[1]] == 0 && !pDone) {
     		pDone = true;
@@ -91,7 +91,7 @@ public class TableroModelo extends Observable{
 
     }
     
-    public void actualizarTarta() {
+    private void actualizarTarta() {
     	setChanged();
     	if(numTablero[posTarta[0]][posTarta[1]] == 0 && !tDone) {
     		tDone = true;
@@ -118,7 +118,12 @@ public class TableroModelo extends Observable{
     	int realPosX = Integer.parseInt(posX);
     	int realPosY = Integer.parseInt(posY);
     	numTablero[realPosX][realPosY] -= 1;
-
+    	
+    	
+    	TableroModelo.getTableroModelo().actualizarVista();
+		TableroModelo.getTableroModelo().actualizarJugador();
+		TableroModelo.getTableroModelo().actualizarTarta();
+		
     }
    
     
@@ -171,7 +176,7 @@ public class TableroModelo extends Observable{
     	posTarta[1] = posY;
     }
     
-    public void comprobarFin(){
+    private void comprobarFin(){
     	setChanged();
         if(posJugador[0] == posTarta[0] && posJugador[1] == posTarta[1]) {
         	notifyObservers(new int[] { 9999 });
@@ -187,4 +192,14 @@ public class TableroModelo extends Observable{
         }
     }
     
+    
+    
+    public void mover(String pDireccion) {
+    	TableroModelo.getTableroModelo().moverJugador(pDireccion);
+		TableroModelo.getTableroModelo().setPlayerDone(false);
+		TableroModelo.getTableroModelo().actualizarVista();
+		TableroModelo.getTableroModelo().actualizarJugador();
+		TableroModelo.getTableroModelo().actualizarTarta();
+		TableroModelo.getTableroModelo().comprobarFin();
+    }
 }
