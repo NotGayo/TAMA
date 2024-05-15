@@ -22,8 +22,8 @@ import javax.swing.Timer;
 
 import java.util.concurrent.TimeUnit;
 
-import Model.Carta;
-import Model.Tablero;
+import Model.MiniCartas.Carta;
+import Model.MiniCartas.Tablero;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;

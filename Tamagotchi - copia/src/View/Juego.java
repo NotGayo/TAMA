@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Model.TableroModelo;
-import Model.Tamagochi;
+import Model.TamaDigOut.TableroModelo;
+import Model.Tamagotchi.Tamagochi;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

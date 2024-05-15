@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Model.*;
+import Model.TamaDigOut.TableroModelo;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
